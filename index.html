@@ -724,7 +724,7 @@
         const loadingEl = document.getElementById('login-loading');
         if (loadingEl) loadingEl.innerText = 'Cargando tus datos...';
         try {
-            const res = await fetch(${CONFIG.API_URL}?action=get&code=${encodeURIComponent(code)});
+            const res = await fetch(`${CONFIG.API_URL}?action=get&code=${encodeURIComponent(code)}`);
             const json = await res.json();
 
             if (json && json.found && json.activo === false) {
@@ -777,7 +777,7 @@
 
     async function cargarHistorial(code) {
         try {
-            const res = await fetch(${CONFIG.API_URL}?action=getHistorial&code=${encodeURIComponent(code)});
+            const res = await fetch(`${CONFIG.API_URL}?action=getHistorial&code=${encodeURIComponent(code)}`);
             const json = await res.json();
             renderHistorial(json.historial || []);
         } catch (e) {
@@ -880,7 +880,7 @@
             const hoy = new Date();
             const yyyy = hoy.getFullYear();
             const mm = String(hoy.getMonth() + 1).padStart(2, '0');
-            mesInput.value = ${yyyy}-${mm};
+            mesInput.value = `${yyyy}-${mm}`;
         }
         document.getElementById('login-code').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') entrarConCodigo();
