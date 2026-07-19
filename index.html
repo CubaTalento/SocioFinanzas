@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-   <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SocioFinanzas - El Control de tu Negocio</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1e3a8a">
     <style>
         :root {
             --bg-color: #f4f6f9;
@@ -350,6 +348,15 @@
     </div>
 </div>
 
+<!-- OVERLAY DE ACCESO VENCIDO -->
+<div id="expired-overlay" style="display:none; position: fixed; inset: 0; background: linear-gradient(135deg, var(--primary), #3b82f6); align-items: center; justify-content: center; padding: 20px; z-index: 999;">
+    <div class="login-card">
+        <h2 style="color: var(--danger);">⏰ Acceso Vencido</h2>
+        <p>Tu suscripción venció el <strong id="expired-fecha"></strong>. Contacta a quien te dio acceso para renovar y seguir usando tus datos.</p>
+        <button onclick="cerrarSesion()" style="width: 100%; padding: 14px; background-color: var(--text-muted); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 10px;">Cambiar código</button>
+    </div>
+</div>
+
 <div id="main-app" style="display:none;">
 <div class="container">
     <header>
@@ -364,6 +371,7 @@
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Simulador de Salud y ONAT</button>
         <button class="tab-btn" onclick="switchTab('fichacosto')">📋 Ficha de Costo e Inteligencia de Precios</button>
+        <button class="tab-btn" onclick="switchTab('historial')">📅 Mi Historial</button>
     </div>
 
     <!-- PESTAÑA 1: SIMULADOR Y ONAT -->
@@ -533,6 +541,41 @@
         </div>
     </div>
 
+    <!-- PESTAÑA 3: HISTORIAL MENSUAL -->
+    <div id="historial" class="tab-content">
+        <div class="card" style="grid-column: 1 / -1;">
+            <h2>📅 Historial Mensual del Negocio</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">
+                Guarda una "foto" de tus resultados cada mes para llevar un registro y comparar tu evolución con el tiempo.
+            </p>
+
+            <div class="form-group" style="max-width: 260px;">
+                <label for="mes-a-guardar">Mes que vas a guardar</label>
+                <input type="month" id="mes-a-guardar">
+            </div>
+            <button onclick="guardarMesActual()" style="background-color: var(--accent); color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 10px;">
+                💾 Guardar este mes en mi historial
+            </button>
+            <div id="historial-guardar-status" style="font-size: 0.85rem; color: var(--text-muted); min-height: 18px;"></div>
+
+            <h3 style="margin-top: 24px; font-size: 1rem; color: var(--text-main);">Meses guardados</h3>
+            <table class="projections-table">
+                <thead>
+                    <tr>
+                        <th>Mes</th>
+                        <th>Ingresos</th>
+                        <th>Ganancia Real</th>
+                        <th>Margen Neto</th>
+                        <th>ONAT</th>
+                    </tr>
+                </thead>
+                <tbody id="historial-body">
+                    <tr><td colspan="5" style="color: var(--text-muted);">Aún no has guardado ningún mes.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <div class="footer">
         <p>Desarrollado con precisión financiera para el ecosistema privado cubano. © 2026</p>
     </div>
@@ -542,7 +585,7 @@
 <script>
     // ======= CONFIGURACIÓN: PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT =======
     const CONFIG = {
-        API_URL: "https://script.google.com/macros/s/AKfycbwxUOvJDWfQzVL4-x5qc-1u7xrVtIgwoLiGXTowyrULXA4SxQh_M84v8PUn2oVnZFKgsw/exec"
+        API_URL: "PEGA_AQUI_TU_URL_DE_APPS_SCRIPT"
     };
     // =======================================================================
 
@@ -681,14 +724,25 @@
         const loadingEl = document.getElementById('login-loading');
         if (loadingEl) loadingEl.innerText = 'Cargando tus datos...';
         try {
-            const res = await fetch(`${CONFIG.API_URL}?action=get&code=${encodeURIComponent(code)}`);
+            const res = await fetch(${CONFIG.API_URL}?action=get&code=${encodeURIComponent(code)});
             const json = await res.json();
+
+            if (json && json.found && json.activo === false) {
+                document.getElementById('main-app').style.display = 'none';
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('expired-fecha').innerText = json.vencimiento || '';
+                document.getElementById('expired-overlay').style.display = 'flex';
+                if (loadingEl) loadingEl.innerText = '';
+                return;
+            }
+
             if (json && json.found) {
                 populateForm(json.data);
             } else {
                 calcularDashboard();
                 calcularFicha();
             }
+            cargarHistorial(code);
         } catch (e) {
             console.error('Error cargando datos', e);
             calcularDashboard();
@@ -721,6 +775,75 @@
         }
     }
 
+    async function cargarHistorial(code) {
+        try {
+            const res = await fetch(${CONFIG.API_URL}?action=getHistorial&code=${encodeURIComponent(code)});
+            const json = await res.json();
+            renderHistorial(json.historial || []);
+        } catch (e) {
+            console.error('Error cargando historial', e);
+        }
+    }
+
+    function renderHistorial(rows) {
+        const body = document.getElementById('historial-body');
+        if (!rows.length) {
+            body.innerHTML = '<tr><td colspan="5" style="color: var(--text-muted);">Aún no has guardado ningún mes.</td></tr>';
+            return;
+        }
+        let html = '';
+        rows.forEach(r => {
+            const neto = parseFloat(r.utilidadNeta) || 0;
+            html += `<tr>
+                <td>${r.mes}</td>
+                <td>${formatCUP(parseFloat(r.ingresos) || 0)}</td>
+                <td style="font-weight:bold; color:${neto >= 0 ? 'var(--success)' : 'var(--danger)'}">${formatCUP(neto)}</td>
+                <td>${(parseFloat(r.margenNeto) || 0).toFixed(1)}%</td>
+                <td>${formatCUP(parseFloat(r.onatTotal) || 0)}</td>
+            </tr>`;
+        });
+        document.getElementById('historial-body').innerHTML = html;
+    }
+
+    async function guardarMesActual() {
+        if (!currentCode) return;
+        const mesInput = document.getElementById('mes-a-guardar').value;
+        const statusEl = document.getElementById('historial-guardar-status');
+        if (!mesInput) {
+            statusEl.innerText = 'Selecciona el mes primero.';
+            return;
+        }
+
+        const ingresos = parseFloat(document.getElementById('ingresos').value) || 0;
+        const cogs = parseFloat(document.getElementById('cogs').value) || 0;
+        const nomina = parseFloat(document.getElementById('nomina').value) || 0;
+        const fijos = parseFloat(document.getElementById('fijos').value) || 0;
+        const onatIngresos = ingresos * 0.10;
+        const onatFuerza = nomina * 0.05;
+        const onatTotal = onatIngresos + onatFuerza;
+        const utilidadNeta = ingresos - cogs - nomina - fijos - onatTotal;
+        const margenNeto = ingresos > 0 ? (utilidadNeta / ingresos) * 100 : 0;
+
+        statusEl.innerText = 'Guardando...';
+        try {
+            await fetch(CONFIG.API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({
+                    action: 'guardarMes',
+                    code: currentCode,
+                    mes: mesInput,
+                    data: { ingresos, cogs, nomina, fijos, utilidadNeta, margenNeto, onatTotal }
+                })
+            });
+            statusEl.innerText = 'Mes guardado ✓';
+            cargarHistorial(currentCode);
+        } catch (e) {
+            console.error('Error guardando mes', e);
+            statusEl.innerText = 'Error al guardar el mes.';
+        }
+    }
+
     function entrarConCodigo() {
         const codeInput = document.getElementById('login-code').value.trim();
         const errorEl = document.getElementById('login-error');
@@ -741,6 +864,7 @@
         currentCode = null;
         localStorage.removeItem('sf_code');
         document.getElementById('main-app').style.display = 'none';
+        document.getElementById('expired-overlay').style.display = 'none';
         document.getElementById('login-overlay').style.display = 'flex';
         document.getElementById('login-code').value = '';
         document.getElementById('login-error').innerText = '';
@@ -750,6 +874,13 @@
         const savedCode = localStorage.getItem('sf_code');
         if (savedCode) {
             document.getElementById('login-code').value = savedCode;
+        }
+        const mesInput = document.getElementById('mes-a-guardar');
+        if (mesInput) {
+            const hoy = new Date();
+            const yyyy = hoy.getFullYear();
+            const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+            mesInput.value = ${yyyy}-${mm};
         }
         document.getElementById('login-code').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') entrarConCodigo();
