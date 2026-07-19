@@ -370,6 +370,7 @@
 
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Simulador de Salud y ONAT</button>
+        <button class="tab-btn" onclick="switchTab('renovar')">💳 Renovar mi Acceso</button>
         <button class="tab-btn" onclick="switchTab('fichacosto')">📋 Ficha de Costo e Inteligencia de Precios</button>
         <button class="tab-btn" onclick="switchTab('historial')">📅 Mi Historial</button>
     </div>
@@ -575,6 +576,51 @@
             </table>
         </div>
     </div>
+    <!-- PESTAÑA 4: RENOVAR ACCESO -->
+    <div id="renovar" class="tab-content">
+        <div class="card">
+            <h2>💳 Planes Disponibles</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+                Elige tu plan, escanea el código de pago y avísame por WhatsApp para activarte al instante.
+            </p>
+
+            <div style="border: 2px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 14px;">
+                <strong style="color: var(--primary);">Plan Inicial</strong>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin: 6px 0;">Incluye tu primer mes + guía completa en PDF</p>
+                <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px;">1000 CUP</div>
+                <button onclick="solicitarPago('Inicial', '1000')" style="width: 100%; background-color: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Solicitar por WhatsApp</button>
+            </div>
+
+            <div style="border: 2px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 14px;">
+                <strong style="color: var(--primary);">Plan Mensual</strong>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin: 6px 0;">Acceso continuo, un mes</p>
+                <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px;">500 CUP</div>
+                <button onclick="solicitarPago('Mensual', '500')" style="width: 100%; background-color: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Solicitar por WhatsApp</button>
+            </div>
+
+            <div style="border: 2px solid var(--accent); border-radius: 12px; padding: 16px; margin-bottom: 10px; background-color: #f0fdfa;">
+                <strong style="color: var(--accent);">Plan Anual ⭐ Mejor precio</strong>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin: 6px 0;">Acceso por 12 meses, ahorras 2 meses</p>
+                <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px;">5000 CUP</div>
+                <button onclick="solicitarPago('Anual', '5000')" style="width: 100%; background-color: var(--accent); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Solicitar por WhatsApp</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📲 Cómo pagar</h2>
+            <ol style="padding-left: 20px; color: var(--text-main); font-size: 0.95rem; line-height: 1.8;">
+                <li>Elige tu plan y toca "Solicitar por WhatsApp"</li>
+                <li>Abre Transfermóvil, opción <strong>Transferencia</strong></li>
+                <li>Escanea el código de abajo</li>
+                <li>Escribe el monto exacto de tu plan</li>
+                <li>Confirma el envío del mensaje de WhatsApp con tu comprobante</li>
+            </ol>
+            <div style="text-align: center; margin-top: 20px;">
+                <img src="qr-pago.png" alt="Código QR de pago" style="max-width: 240px; width: 100%; border: 2px solid var(--border); border-radius: 12px; padding: 8px;">
+            </div>
+            <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 10px;">Tu acceso se activa apenas confirme tu pago.</p>
+        </div>
+    </div>
 
     <div class="footer">
         <p>Desarrollado con precisión financiera para el ecosistema privado cubano. © 2026</p>
@@ -662,11 +708,11 @@
         for (let m = 1; m <= 3; m++) {
             currentVentas = currentVentas * (1 + crecimiento);
             currentNeto = currentNeto * (1 + crecimiento);
-            htmlProyecciones += '<tr>' +
-                '<td>Mes +' + m + '</td>' +
-                '<td>' + formatCUP(currentVentas) + '</td>' +
-                '<td style="font-weight:bold; color:' + (currentNeto >= 0 ? 'var(--success)' : 'var(--danger)') + '">' + formatCUP(currentNeto) + '</td>' +
-            '</tr>';
+            htmlProyecciones += `<tr>
+                <td>Mes +${m}</td>
+                <td>${formatCUP(currentVentas)}</td>
+                <td style="font-weight:bold; color:${currentNeto >= 0 ? 'var(--success)' : 'var(--danger)'}">${formatCUP(currentNeto)}</td>
+            </tr>`;
         }
         document.getElementById('projections-body').innerHTML = htmlProyecciones;
     }
@@ -724,7 +770,7 @@
         const loadingEl = document.getElementById('login-loading');
         if (loadingEl) loadingEl.innerText = 'Cargando tus datos...';
         try {
-            const res = await fetch(CONFIG.API_URL + '?action=get&code=' + encodeURIComponent(code));
+            const res = await fetch(`${CONFIG.API_URL}?action=get&code=${encodeURIComponent(code)}`);
             const json = await res.json();
 
             if (json && json.found && json.activo === false) {
@@ -777,7 +823,7 @@
 
     async function cargarHistorial(code) {
         try {
-            const res = await fetch(CONFIG.API_URL + '?action=getHistorial&code=' + encodeURIComponent(code));
+            const res = await fetch(`${CONFIG.API_URL}?action=getHistorial&code=${encodeURIComponent(code)}`);
             const json = await res.json();
             renderHistorial(json.historial || []);
         } catch (e) {
@@ -794,13 +840,13 @@
         let html = '';
         rows.forEach(r => {
             const neto = parseFloat(r.utilidadNeta) || 0;
-            html += '<tr>' +
-                '<td>' + r.mes + '</td>' +
-                '<td>' + formatCUP(parseFloat(r.ingresos) || 0) + '</td>' +
-                '<td style="font-weight:bold; color:' + (neto >= 0 ? 'var(--success)' : 'var(--danger)') + '">' + formatCUP(neto) + '</td>' +
-                '<td>' + (parseFloat(r.margenNeto) || 0).toFixed(1) + '%</td>' +
-                '<td>' + formatCUP(parseFloat(r.onatTotal) || 0) + '</td>' +
-            '</tr>';
+            html += `<tr>
+                <td>${r.mes}</td>
+                <td>${formatCUP(parseFloat(r.ingresos) || 0)}</td>
+                <td style="font-weight:bold; color:${neto >= 0 ? 'var(--success)' : 'var(--danger)'}">${formatCUP(neto)}</td>
+                <td>${(parseFloat(r.margenNeto) || 0).toFixed(1)}%</td>
+                <td>${formatCUP(parseFloat(r.onatTotal) || 0)}</td>
+            </tr>`;
         });
         document.getElementById('historial-body').innerHTML = html;
     }
@@ -843,7 +889,12 @@
             statusEl.innerText = 'Error al guardar el mes.';
         }
     }
-
+    function solicitarPago(plan, precio) {
+        const codigo = currentCode || '(sin código)';
+        const mensaje = 'Hola, quiero pagar el plan ' + plan + ' (' + precio + ' CUP) para mi código ' + codigo + '. Ya envié la transferencia, adjunto comprobante.';
+        const url = 'https://wa.me/5352742647?text=' + encodeURIComponent(mensaje);
+        window.open(url, '_blank');
+    }
     function entrarConCodigo() {
         const codeInput = document.getElementById('login-code').value.trim();
         const errorEl = document.getElementById('login-error');
@@ -880,7 +931,7 @@
             const hoy = new Date();
             const yyyy = hoy.getFullYear();
             const mm = String(hoy.getMonth() + 1).padStart(2, '0');
-            mesInput.value = yyyy + '-' + mm;
+            mesInput.value = `${yyyy}-${mm}`;
         }
         document.getElementById('login-code').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') entrarConCodigo();
