@@ -662,11 +662,11 @@
         for (let m = 1; m <= 3; m++) {
             currentVentas = currentVentas * (1 + crecimiento);
             currentNeto = currentNeto * (1 + crecimiento);
-            htmlProyecciones += `<tr>
-                <td>Mes +${m}</td>
-                <td>${formatCUP(currentVentas)}</td>
-                <td style="font-weight:bold; color:${currentNeto >= 0 ? 'var(--success)' : 'var(--danger)'}">${formatCUP(currentNeto)}</td>
-            </tr>`;
+            htmlProyecciones += '<tr>' +
+                '<td>Mes +' + m + '</td>' +
+                '<td>' + formatCUP(currentVentas) + '</td>' +
+                '<td style="font-weight:bold; color:' + (currentNeto >= 0 ? 'var(--success)' : 'var(--danger)') + '">' + formatCUP(currentNeto) + '</td>' +
+            '</tr>';
         }
         document.getElementById('projections-body').innerHTML = htmlProyecciones;
     }
@@ -724,7 +724,7 @@
         const loadingEl = document.getElementById('login-loading');
         if (loadingEl) loadingEl.innerText = 'Cargando tus datos...';
         try {
-            const res = await fetch(`${CONFIG.API_URL}?action=get&code=${encodeURIComponent(code)}`);
+            const res = await fetch(CONFIG.API_URL + '?action=get&code=' + encodeURIComponent(code));
             const json = await res.json();
 
             if (json && json.found && json.activo === false) {
@@ -777,7 +777,7 @@
 
     async function cargarHistorial(code) {
         try {
-            const res = await fetch(`${CONFIG.API_URL}?action=getHistorial&code=${encodeURIComponent(code)}`);
+            const res = await fetch(CONFIG.API_URL + '?action=getHistorial&code=' + encodeURIComponent(code));
             const json = await res.json();
             renderHistorial(json.historial || []);
         } catch (e) {
@@ -794,13 +794,13 @@
         let html = '';
         rows.forEach(r => {
             const neto = parseFloat(r.utilidadNeta) || 0;
-            html += `<tr>
-                <td>${r.mes}</td>
-                <td>${formatCUP(parseFloat(r.ingresos) || 0)}</td>
-                <td style="font-weight:bold; color:${neto >= 0 ? 'var(--success)' : 'var(--danger)'}">${formatCUP(neto)}</td>
-                <td>${(parseFloat(r.margenNeto) || 0).toFixed(1)}%</td>
-                <td>${formatCUP(parseFloat(r.onatTotal) || 0)}</td>
-            </tr>`;
+            html += '<tr>' +
+                '<td>' + r.mes + '</td>' +
+                '<td>' + formatCUP(parseFloat(r.ingresos) || 0) + '</td>' +
+                '<td style="font-weight:bold; color:' + (neto >= 0 ? 'var(--success)' : 'var(--danger)') + '">' + formatCUP(neto) + '</td>' +
+                '<td>' + (parseFloat(r.margenNeto) || 0).toFixed(1) + '%</td>' +
+                '<td>' + formatCUP(parseFloat(r.onatTotal) || 0) + '</td>' +
+            '</tr>';
         });
         document.getElementById('historial-body').innerHTML = html;
     }
@@ -880,7 +880,7 @@
             const hoy = new Date();
             const yyyy = hoy.getFullYear();
             const mm = String(hoy.getMonth() + 1).padStart(2, '0');
-            mesInput.value = `${yyyy}-${mm}`;
+            mesInput.value = yyyy + '-' + mm;
         }
         document.getElementById('login-code').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') entrarConCodigo();
