@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocioFinanzas - El Control de tu Negocio</title>
+    <style>
+        :root {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --primary: #1e3a8a;
+            --accent: #0d9488;
+            --text-main: #1f2937;
+            --text-muted: #4b5563;
+            --border: #e5e7eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, var(--primary), #3b82f6);
+            color: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .session-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255,255,255,0.25);
+            font-size: 0.85rem;
+        }
+
+        .session-bar button {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.4);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        #sync-status {
+            opacity: 0.85;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background-color: #e5e7eb;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .tab-content.active {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-prefix {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-weight: bold;
+        }
+
+        input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 10px 12px 10px 45px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            color: var(--text-main);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+        }
+
+        .range-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        input[type="range"] {
+            flex: 1;
+        }
+
+        .range-value {
+            font-weight: bold;
+            min-width: 50px;
+            text-align: right;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .metric:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .metric-value {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .status-badge {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 15px;
+        }
+
+        .bg-success { background-color: #d1fae5; color: #065f46; }
+        .bg-warning { background-color: #fef3c7; color: #92400e; }
+        .bg-danger { background-color: #fee2e2; color: #991b1b; }
+
+        .projections-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .projections-table th, .projections-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+
+        .projections-table th {
+            background-color: var(--bg-color);
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* LOGIN OVERLAY */
+        #login-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, var(--primary), #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 999;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px 24px;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .login-card h2 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 1.3rem;
+        }
+
+        .login-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        #login-code {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.2rem;
+            text-align: center;
+            letter-spacing: 2px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 12px;
+            outline: none;
+        }
+
+        #login-code:focus {
+            border-color: var(--primary);
+        }
+
+        #login-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #login-error {
+            color: var(--danger);
+            font-size: 0.85rem;
+            margin-top: 10px;
+            min-height: 18px;
+        }
+
+        #login-loading {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 10px;
+            min-height: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- OVERLAY DE ACCESO -->
+<div id="login-overlay">
+    <div class="login-card">
+        <h2>🔒 Acceso Privado</h2>
+        <p>Ingresa tu código personal para entrar a tu SocioFinanzas Pro.</p>
+        <input type="text" id="login-code" placeholder="Tu código" autocomplete="off">
+        <button id="login-btn" onclick="entrarConCodigo()">Entrar</button>
+        <div id="login-error"></div>
+        <div id="login-loading"></div>
+    </div>
+</div>
+
+<div id="main-app" style="display:none;">
+<div class="container">
+    <header>
+        <h1>SocioFinanzas Pro</h1>
+        <p>Sistema Inteligente de Control Financiero y Fichas de Costo para MIPYMES</p>
+        <div class="session-bar">
+            <span>Código activo: <strong id="current-code-label">-</strong> &nbsp;•&nbsp; <span id="sync-status">Listo</span></span>
+            <button onclick="cerrarSesion()">Cambiar código</button>
+        </div>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Simulador de Salud y ONAT</button>
+        <button class="tab-btn" onclick="switchTab('fichacosto')">📋 Ficha de Costo e Inteligencia de Precios</button>
+    </div>
+
+    <!-- PESTAÑA 1: SIMULADOR Y ONAT -->
+    <div id="dashboard" class="tab-content active">
+        <div class="card">
+            <h2>📥 Datos Mensuales del Negocio</h2>
+            <div class="form-group">
+                <label for="ingresos">Ingresos Totales (Ventas)</label>
+                <div class="input-wrapper">
+                    <span class="input-prefix">CUP</span>
+                    <input type="number" id="ingresos" value="150000" oninput="calcularDashboard(); scheduleSave();">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="cogs">Costos Directos (Materia Prima / Inventario)</label>
+                <div class="input-wrapper">
+                    <span class="input-prefix">CUP</span>
+                    <input type="number" id="cogs" value="60000" oninput="calcularDashboard(); scheduleSave();">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="nomina">Gastos de Personal (Nómina / Trabajadores)</label>
+                <div class="input-wrapper">
+                    <span class="input-prefix">CUP</span>
+                    <input type="number" id="nomina" value="25000" oninput="calcularDashboard(); scheduleSave();">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="fijos">Otros Gastos Fijos (Alquiler, Luz, Transporte)</label>
+                <div class="input-wrapper">
+                    <span class="input-prefix">CUP</span>
+                    <input type="number" id="fijos" value="15000" oninput="calcularDashboard(); scheduleSave();">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="crecimiento">Tasa de Crecimiento Mensual Estimada</label>
+                <div class="range-container">
+                    <input type="range" id="crecimiento" min="-20" max="50" value="5" oninput="updateRangeVal('crecimiento-val', this.value); calcularDashboard(); scheduleSave();">
+                    <span id="crecimiento-val" class="range-value">5%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📈 Diagnóstico, Margen y ONAT</h2>
+            <div class="metric">
+                <span class="metric-label">Margen Bruto:</span>
+                <span id="lbl-margen-bruto" class="metric-value">0%</span>
+            </div>
+
+            <div style="margin: 15px 0; padding: 12px; background-color: #f8fafc; border-radius: 8px; border-left: 4px solid var(--accent);">
+                <strong style="color: var(--accent); font-size: 0.9rem; display: block; margin-bottom: 5px;">MÓDULO DE RETENCIÓN ONAT (MENSUAL)</strong>
+                <div class="metric" style="padding: 4px 0; border: none;">
+                    <span class="metric-label" style="font-size: 0.85rem;">Impuesto sobre Ingresos Brutos (10%):</span>
+                    <span id="lbl-onat-ingresos" style="font-size: 0.95rem; font-weight: 600;">0 CUP</span>
+                </div>
+                <div class="metric" style="padding: 4px 0; border: none;">
+                    <span class="metric-label" style="font-size: 0.85rem;">Impuesto Fuerza de Trabajo (5% s/ Nómina):</span>
+                    <span id="lbl-onat-fuerza" style="font-size: 0.95rem; font-weight: 600;">0 CUP</span>
+                </div>
+                <div class="metric" style="padding: 4px 0; border: none; margin-top: 5px; border-top: 1px dashed #cbd5e1;">
+                    <span class="metric-label" style="font-size: 0.9rem; font-weight: bold;">Total Guardar para ONAT:</span>
+                    <span id="lbl-onat-total" style="font-size: 1rem; font-weight: bold; color: var(--danger);">0 CUP</span>
+                </div>
+            </div>
+
+            <div class="metric">
+                <span class="metric-label">Utilidad Neta (Ganancia Real):</span>
+                <span id="lbl-utilidad-neta" class="metric-value">0 CUP</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Margen Neto Limpio:</span>
+                <span id="lbl-margen-neto" class="metric-value">0%</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Punto de Equilibrio Mínimo:</span>
+                <span id="lbl-breakeven" class="metric-value" style="color: var(--primary);">0 CUP</span>
+            </div>
+
+            <div id="status-salud" class="status-badge">Calculando...</div>
+
+            <h3 style="margin-top: 20px; font-size: 1rem; color: var(--text-main);">Proyección Estimada a 3 Meses</h3>
+            <table class="projections-table">
+                <thead>
+                    <tr>
+                        <th>Mes</th>
+                        <th>Ventas Est.</th>
+                        <th>Ganancia Real Est.</th>
+                    </tr>
+                </thead>
+                <tbody id="projections-body">
+                    <!-- Dinámico -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PESTAÑA 2: FICHA DE COSTO -->
+    <div id="fichacosto" class="tab-content">
+        <div class="card">
+            <h2>📋 Configuración de Ficha de Costo</h2>
+            <div class="form-group">
+                <label for="prod-nombre">Nombre del Producto / Servicio</label>
+                <input type="text" id="prod-nombre" value="Pizza Margherita Especial" oninput="scheduleSave();">
+            </div>
+            <div class="form-group">
+                <label for="costo-materia">Materia Prima Directa (Ingredientes, materiales)</label>
+                <div class="input-wrapper">
+                    <span class="input-prefix">CUP</span>
+                    <input type="number" id="costo-materia" value="250" oninput="calcularFicha(); scheduleSave();">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="costo-envase">Envase, Desechables y Despacho</label>
+                <div class="input-wrapper">
+                    <span class="input-prefix">CUP</span>
+                    <input type="number" id="costo-envase" value="40" oninput="calcularFicha(); scheduleSave();">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="costo-mano">Mano de Obra Directa (Por unidad producida)</label>
+                <div class="input-wrapper">
+                    <span class="input-prefix">CUP</span>
+                    <input type="number" id="costo-mano" value="60" oninput="calcularFicha(); scheduleSave();">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="costo-indirecto">Costos Indirectos Prorrateados (Luz, gas, depreciación)</label>
+                <div class="input-wrapper">
+                    <span class="input-prefix">CUP</span>
+                    <input type="number" id="costo-indirecto" value="30" oninput="calcularFicha(); scheduleSave();">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="margen-deseado">Margen de Ganancia Neto Deseado</label>
+                <div class="range-container">
+                    <input type="range" id="margen-deseado" min="10" max="150" value="40" oninput="updateRangeVal('margen-deseado-val', this.value + '%'); calcularFicha(); scheduleSave();">
+                    <span id="margen-deseado-val" class="range-value">40%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>💰 Fijación Estratégica de Precio</h2>
+            <div style="background-color: var(--primary); color: white; padding: 20px; border-radius: 10px; text-align: center; margin-bottom: 20px;">
+                <span style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9;">Precio de Venta Sugerido</span>
+                <h1 id="lbl-precio-final" style="font-size: 2.5rem; margin: 5px 0;">0.00 CUP</h1>
+                <p style="font-size: 0.85rem; opacity: 0.8;">Este precio ya protege tu margen y absorbe el 10% de la ONAT</p>
+            </div>
+
+            <div class="metric">
+                <span class="metric-label">Costo Total de Producción:</span>
+                <span id="lbl-costo-total" class="metric-value">0 CUP</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Aporte de Impuesto ONAT (10% Incluido):</span>
+                <span id="lbl-onat-unitario" class="metric-value" style="color: var(--danger);">0 CUP</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Tu Ganancia Limpia (Por unidad):</span>
+                <span id="lbl-ganancia-unitaria" class="metric-value" style="color: var(--success);">0 CUP</span>
+            </div>
+
+            <div style="margin-top: 25px; padding: 15px; background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; font-size: 0.9rem; color: #166534;">
+                <strong>💡 Recomendación del Analista:</strong> Si fijas el precio según el mercado por debajo del costo sugerido, estarás perdiendo dinero o trabajando para pagar impuestos. Ajusta tu margen o reduce costos de materia prima.
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Desarrollado con precisión financiera para el ecosistema privado cubano. © 2026</p>
+    </div>
+</div>
+</div>
+
+<script>
+    // ======= CONFIGURACIÓN: PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT =======
+    const CONFIG = {
+        API_URL: "https://script.google.com/macros/s/AKfycbw0ChcukHbWW7aaoEOmh9kv7Bg3sldW5hic0Coc14Dk2MQDoKq_wQ6kCZRwB64lflANHw/exec"
+    };
+    // =======================================================================
+
+    let currentCode = null;
+    let saveTimeout = null;
+    let isLoadingData = false;
+
+    const FIELD_IDS = [
+        'ingresos','cogs','nomina','fijos','crecimiento',
+        'prod-nombre','costo-materia','costo-envase','costo-mano','costo-indirecto','margen-deseado'
+    ];
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+        document.getElementById(tabId).classList.add('active');
+    }
+
+    function updateRangeVal(id, val) {
+        document.getElementById(id).innerText = val;
+    }
+
+    function formatCUP(val) {
+        return new Intl.NumberFormat('es-CU', { style: 'currency', currency: 'CUP' }).format(val);
+    }
+
+    function calcularDashboard() {
+        const ingresos = parseFloat(document.getElementById('ingresos').value) || 0;
+        const cogs = parseFloat(document.getElementById('cogs').value) || 0;
+        const nomina = parseFloat(document.getElementById('nomina').value) || 0;
+        const fijos = parseFloat(document.getElementById('fijos').value) || 0;
+        const crecimiento = (parseFloat(document.getElementById('crecimiento').value) || 0) / 100;
+
+        const utilidadBruta = ingresos - cogs;
+        const margenBruto = ingresos > 0 ? (utilidadBruta / ingresos) * 100 : 0;
+
+        const onatIngresos = ingresos * 0.10;
+        const onatFuerza = nomina * 0.05;
+        const onatTotal = onatIngresos + onatFuerza;
+
+        const gastosOperativosTotales = nomina + fijos;
+        const utilidadNeta = ingresos - cogs - gastosOperativosTotales - onatTotal;
+        const margenNeto = ingresos > 0 ? (utilidadNeta / ingresos) * 100 : 0;
+
+        const margenContribucionEfectivo = ingresos > 0 ? (ingresos - cogs - (ingresos * 0.10)) / ingresos : 0;
+        const costosFijosEfectivos = fijos + nomina + (nomina * 0.05);
+        const breakeven = margenContribucionEfectivo > 0 ? costosFijosEfectivos / margenContribucionEfectivo : 0;
+
+        document.getElementById('lbl-margen-bruto').innerText = margenBruto.toFixed(1) + '%';
+        document.getElementById('lbl-onat-ingresos').innerText = formatCUP(onatIngresos);
+        document.getElementById('lbl-onat-fuerza').innerText = formatCUP(onatFuerza);
+        document.getElementById('lbl-onat-total').innerText = formatCUP(onatTotal);
+        document.getElementById('lbl-utilidad-neta').innerText = formatCUP(utilidadNeta);
+        document.getElementById('lbl-margen-neto').innerText = margenNeto.toFixed(1) + '%';
+        document.getElementById('lbl-breakeven').innerText = formatCUP(breakeven);
+
+        const statusEl = document.getElementById('status-salud');
+        statusEl.className = 'status-badge';
+        if (utilidadNeta < 0) {
+            statusEl.innerText = "🚨 Riesgo Crítico: Pérdida o Camino a la Quiebra";
+            statusEl.classList.add('bg-danger');
+        } else if (margenNeto < 12) {
+            statusEl.innerText = "⚠️ Alerta: Negocio Estancado o Margen muy Vulnerable";
+            statusEl.classList.add('bg-warning');
+        } else {
+            statusEl.innerText = "🟢 Salud Excelente: Empresa Rentable y Segura";
+            statusEl.classList.add('bg-success');
+        }
+
+        let htmlProyecciones = '';
+        let currentVentas = ingresos;
+        let currentNeto = utilidadNeta;
+        for (let m = 1; m <= 3; m++) {
+            currentVentas = currentVentas * (1 + crecimiento);
+            currentNeto = currentNeto * (1 + crecimiento);
+            htmlProyecciones += `<tr>
+                <td>Mes +${m}</td>
+                <td>${formatCUP(currentVentas)}</td>
+                <td style="font-weight:bold; color:${currentNeto >= 0 ? 'var(--success)' : 'var(--danger)'}">${formatCUP(currentNeto)}</td>
+            </tr>`;
+        }
+        document.getElementById('projections-body').innerHTML = htmlProyecciones;
+    }
+
+    function calcularFicha() {
+        const materia = parseFloat(document.getElementById('costo-materia').value) || 0;
+        const envase = parseFloat(document.getElementById('costo-envase').value) || 0;
+        const mano = parseFloat(document.getElementById('costo-mano').value) || 0;
+        const indirecto = parseFloat(document.getElementById('costo-indirecto').value) || 0;
+        const margenDeseado = (parseFloat(document.getElementById('margen-deseado').value) || 0) / 100;
+
+        const costoTotal = materia + envase + mano + indirecto;
+        const divisor = 1 - margenDeseado - 0.10;
+        let precioFinal = 0;
+        if (divisor > 0) {
+            precioFinal = costoTotal / divisor;
+        } else {
+            precioFinal = costoTotal / 0.1;
+        }
+
+        const onatUnitario = precioFinal * 0.10;
+        const gananciaUnitaria = precioFinal - costoTotal - onatUnitario;
+
+        document.getElementById('lbl-costo-total').innerText = formatCUP(costoTotal);
+        document.getElementById('lbl-precio-final').innerText = formatCUP(precioFinal);
+        document.getElementById('lbl-onat-unitario').innerText = formatCUP(onatUnitario);
+        document.getElementById('lbl-ganancia-unitaria').innerText = formatCUP(gananciaUnitaria);
+    }
+
+    // ======= SISTEMA DE CÓDIGO / SINCRONIZACIÓN =======
+
+    function collectFormData() {
+        const data = {};
+        FIELD_IDS.forEach(id => {
+            data[id] = document.getElementById(id).value;
+        });
+        return data;
+    }
+
+    function populateForm(data) {
+        isLoadingData = true;
+        FIELD_IDS.forEach(id => {
+            if (data[id] !== undefined && data[id] !== '' && data[id] !== null) {
+                document.getElementById(id).value = data[id];
+            }
+        });
+        document.getElementById('crecimiento-val').innerText = document.getElementById('crecimiento').value + '%';
+        document.getElementById('margen-deseado-val').innerText = document.getElementById('margen-deseado').value + '%';
+        calcularDashboard();
+        calcularFicha();
+        isLoadingData = false;
+    }
+
+    async function loadData(code) {
+        const loadingEl = document.getElementById('login-loading');
+        if (loadingEl) loadingEl.innerText = 'Cargando tus datos...';
+        try {
+            const res = await fetch(`${CONFIG.API_URL}?action=get&code=${encodeURIComponent(code)}`);
+            const json = await res.json();
+            if (json && json.found) {
+                populateForm(json.data);
+            } else {
+                calcularDashboard();
+                calcularFicha();
+            }
+        } catch (e) {
+            console.error('Error cargando datos', e);
+            calcularDashboard();
+            calcularFicha();
+        }
+        if (loadingEl) loadingEl.innerText = '';
+    }
+
+    function scheduleSave() {
+        if (isLoadingData || !currentCode) return;
+        clearTimeout(saveTimeout);
+        const statusEl = document.getElementById('sync-status');
+        if (statusEl) statusEl.innerText = 'Guardando...';
+        saveTimeout = setTimeout(() => saveData(currentCode), 1200);
+    }
+
+    async function saveData(code) {
+        const data = collectFormData();
+        const statusEl = document.getElementById('sync-status');
+        try {
+            await fetch(CONFIG.API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ code, data })
+            });
+            if (statusEl) statusEl.innerText = 'Guardado ✓';
+        } catch (e) {
+            console.error('Error guardando', e);
+            if (statusEl) statusEl.innerText = 'Error al guardar (revisa tu conexión)';
+        }
+    }
+
+    function entrarConCodigo() {
+        const codeInput = document.getElementById('login-code').value.trim();
+        const errorEl = document.getElementById('login-error');
+        if (!codeInput) {
+            errorEl.innerText = 'Ingresa tu código.';
+            return;
+        }
+        errorEl.innerText = '';
+        currentCode = codeInput;
+        localStorage.setItem('sf_code', currentCode);
+        document.getElementById('login-overlay').style.display = 'none';
+        document.getElementById('main-app').style.display = 'block';
+        document.getElementById('current-code-label').innerText = currentCode;
+        loadData(currentCode);
+    }
+
+    function cerrarSesion() {
+        currentCode = null;
+        localStorage.removeItem('sf_code');
+        document.getElementById('main-app').style.display = 'none';
+        document.getElementById('login-overlay').style.display = 'flex';
+        document.getElementById('login-code').value = '';
+        document.getElementById('login-error').innerText = '';
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedCode = localStorage.getItem('sf_code');
+        if (savedCode) {
+            document.getElementById('login-code').value = savedCode;
+        }
+        document.getElementById('login-code').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') entrarConCodigo();
+        });
+    });
+</script>
+
+</body>
+</html>
