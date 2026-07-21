@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SocioFinanzas - El Control de tu Negocio</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e3a8a">
     <style>
         :root {
             --bg-color: #f4f6f9;
@@ -17,326 +19,77 @@
             --warning: #f59e0b;
             --danger: #ef4444;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.5;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            background: linear-gradient(135deg, var(--primary), #3b82f6);
-            color: white;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        header h1 {
-            font-size: 2rem;
-            margin-bottom: 8px;
-        }
-
-        header p {
-            font-size: 1rem;
-            opacity: 0.9;
-        }
-
-        .session-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 16px;
-            padding-top: 14px;
-            border-top: 1px solid rgba(255,255,255,0.25);
-            font-size: 0.85rem;
-        }
-
-        .session-bar button {
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.4);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            cursor: pointer;
-        }
-
-        #sync-status {
-            opacity: 0.85;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .tab-btn {
-            flex: 1;
-            background-color: #e5e7eb;
-            border: none;
-            padding: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .tab-btn.active {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-
-        @media (min-width: 768px) {
-            .tab-content.active {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .card h2 {
-            font-size: 1.25rem;
-            color: var(--primary);
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--bg-color);
-            padding-bottom: 8px;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-        }
-
-        .input-wrapper {
-            position: relative;
-        }
-
-        .input-prefix {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-weight: bold;
-        }
-
-        input[type="number"], input[type="text"] {
-            width: 100%;
-            padding: 10px 12px 10px 45px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            color: var(--text-main);
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        input:focus {
-            border-color: var(--primary);
-        }
-
-        .range-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        input[type="range"] {
-            flex: 1;
-        }
-
-        .range-value {
-            font-weight: bold;
-            min-width: 50px;
-            text-align: right;
-        }
-
-        .metric {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .metric:last-child {
-            border-bottom: none;
-        }
-
-        .metric-label {
-            font-weight: 500;
-            color: var(--text-muted);
-        }
-
-        .metric-value {
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        .status-badge {
-            display: block;
-            text-align: center;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin-top: 15px;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.5; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 30px; background: linear-gradient(135deg, var(--primary), #3b82f6); color: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        header h1 { font-size: 2rem; margin-bottom: 8px; }
+        header p { font-size: 1rem; opacity: 0.9; }
+        .session-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.25); font-size: 0.85rem; }
+        .session-bar button { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; }
+        #sync-status { opacity: 0.85; }
+        .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { flex: 1; min-width: 130px; background-color: #e5e7eb; border: none; padding: 12px 8px; font-size: 0.85rem; font-weight: 600; color: var(--text-muted); border-radius: 8px; cursor: pointer; transition: all 0.2s ease; }
+        .tab-btn.active { background-color: var(--primary); color: white; }
+        .tab-content { display: none; }
+        .tab-content.active { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 768px) { .tab-content.active { grid-template-columns: 1fr 1fr; } }
+        .card { background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .card h2 { font-size: 1.2rem; color: var(--primary); margin-bottom: 20px; border-bottom: 2px solid var(--bg-color); padding-bottom: 8px; }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-size: 0.875rem; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
+        .input-wrapper { position: relative; }
+        .input-prefix { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-weight: bold; }
+        input[type="number"], input[type="text"], input[type="month"], select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; color: var(--text-main); outline: none; }
+        input.with-prefix { padding-left: 45px; }
+        input:focus, select:focus { border-color: var(--primary); }
+        .range-container { display: flex; align-items: center; gap: 12px; }
+        input[type="range"] { flex: 1; }
+        .range-value { font-weight: bold; min-width: 50px; text-align: right; }
+        .metric { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+        .metric:last-child { border-bottom: none; }
+        .metric-label { font-weight: 500; color: var(--text-muted); }
+        .metric-value { font-weight: 700; font-size: 1.1rem; }
+        .status-badge { display: block; text-align: center; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; margin-top: 15px; }
         .bg-success { background-color: #d1fae5; color: #065f46; }
         .bg-warning { background-color: #fef3c7; color: #92400e; }
         .bg-danger { background-color: #fee2e2; color: #991b1b; }
-
-        .projections-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        .projections-table th, .projections-table td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.9rem;
-        }
-
-        .projections-table th {
-            background-color: var(--bg-color);
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        /* LOGIN OVERLAY */
-        #login-overlay {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, var(--primary), #3b82f6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            z-index: 999;
-        }
-
-        .login-card {
-            background: white;
-            border-radius: 16px;
-            padding: 32px 24px;
-            max-width: 380px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-
-        .login-card h2 {
-            color: var(--primary);
-            margin-bottom: 8px;
-            font-size: 1.3rem;
-        }
-
-        .login-card p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-        }
-
-        #login-code {
-            width: 100%;
-            padding: 14px;
-            font-size: 1.2rem;
-            text-align: center;
-            letter-spacing: 2px;
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            margin-bottom: 12px;
-            outline: none;
-        }
-
-        #login-code:focus {
-            border-color: var(--primary);
-        }
-
-        #login-btn {
-            width: 100%;
-            padding: 14px;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        #login-error {
-            color: var(--danger);
-            font-size: 0.85rem;
-            margin-top: 10px;
-            min-height: 18px;
-        }
-
-        #login-loading {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 10px;
-            min-height: 18px;
+        .projections-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .projections-table th, .projections-table td { padding: 10px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+        .projections-table th { background-color: var(--bg-color); color: var(--text-muted); font-weight: 600; }
+        .footer { text-align: center; margin-top: 40px; color: var(--text-muted); font-size: 0.85rem; }
+        .btn-primary { background-color: var(--primary); color: white; border: none; padding: 12px 18px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .btn-accent { background-color: var(--accent); color: white; border: none; padding: 12px 18px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .btn-danger-outline { background-color: white; color: var(--danger); border: 1px solid var(--danger); padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .btn-small-danger { background: var(--danger); color: white; border: none; border-radius: 6px; padding: 6px 10px; cursor: pointer; font-size: 0.8rem; }
+        .item-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+        .item-row input.item-nombre { flex: 2; }
+        .item-row input.item-monto { flex: 1; }
+        .item-row select.item-moneda { flex: 0 0 80px; }
+        .list-total { text-align: right; font-weight: bold; color: var(--primary); margin-top: 6px; font-size: 0.95rem; }
+        .alert-banner { background-color: #fef3c7; border: 1px solid var(--warning); color: #92400e; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-size: 0.9rem; display: none; }
+        .alert-banner.show { display: block; }
+        .eltoque-link { font-size: 0.8rem; color: var(--accent); text-decoration: none; margin-left: 8px; }
+        .toolbar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+        .toolbar button { background: white; border: 1px solid var(--border); color: var(--text-main); padding: 8px 14px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; }
+        #login-overlay { position: fixed; inset: 0; background: linear-gradient(135deg, var(--primary), #3b82f6); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 999; }
+        .login-card { background: white; border-radius: 16px; padding: 32px 24px; max-width: 380px; width: 100%; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .login-card h2 { color: var(--primary); margin-bottom: 8px; font-size: 1.3rem; }
+        .login-card p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; }
+        #login-code { width: 100%; padding: 14px; font-size: 1.2rem; text-align: center; letter-spacing: 2px; border: 2px solid var(--border); border-radius: 10px; margin-bottom: 12px; outline: none; }
+        #login-code:focus { border-color: var(--primary); }
+        #login-btn { width: 100%; padding: 14px; background-color: var(--primary); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; }
+        #login-error { color: var(--danger); font-size: 0.85rem; margin-top: 10px; min-height: 18px; }
+        #login-loading { font-size: 0.85rem; color: var(--text-muted); margin-top: 10px; min-height: 18px; }
+        @media print {
+            #login-overlay, #expired-overlay, .session-bar, .tabs, .toolbar, button { display: none !important; }
+            .tab-content { display: grid !important; }
+            body { padding: 0; }
         }
     </style>
 </head>
 <body>
 
-<!-- OVERLAY DE ACCESO -->
 <div id="login-overlay">
     <div class="login-card">
         <h2>🔒 Acceso Privado</h2>
@@ -348,7 +101,6 @@
     </div>
 </div>
 
-<!-- OVERLAY DE ACCESO VENCIDO -->
 <div id="expired-overlay" style="display:none; position: fixed; inset: 0; background: linear-gradient(135deg, var(--primary), #3b82f6); align-items: center; justify-content: center; padding: 20px; z-index: 999;">
     <div class="login-card">
         <h2 style="color: var(--danger);">⏰ Acceso Vencido</h2>
@@ -369,147 +121,114 @@
     </header>
 
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Simulador de Salud y ONAT</button>
-        <button class="tab-btn" onclick="switchTab('renovar')">💳 Renovar mi Acceso</button>
-        <button class="tab-btn" onclick="switchTab('fichacosto')">📋 Ficha de Costo e Inteligencia de Precios</button>
+        <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Resumen General</button>
+        <button class="tab-btn" onclick="switchTab('fichacosto')">📋 Fichas de Costo</button>
         <button class="tab-btn" onclick="switchTab('historial')">📅 Mi Historial</button>
+        <button class="tab-btn" onclick="switchTab('renovar')">💳 Renovar mi Acceso</button>
     </div>
 
-    <!-- PESTAÑA 1: SIMULADOR Y ONAT -->
+    <!-- TAB 1: RESUMEN GENERAL -->
     <div id="dashboard" class="tab-content active">
+        <div class="card" style="grid-column: 1 / -1;">
+            <div id="alerta-tasa" class="alert-banner"></div>
+            <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end;">
+                <div class="form-group" style="max-width:220px; margin-bottom:0;">
+                    <label for="tasa-cambio">Tasa de cambio (CUP por 1 USD)</label>
+                    <input type="number" id="tasa-cambio" value="320" oninput="calcularTodo(); scheduleSaveDebounced();">
+                </div>
+                <a class="eltoque-link" href="https://eltoque.com/tasas-de-cambio-de-moneda-en-cuba-hoy" target="_blank" rel="noopener">Ver tasa en El Toque ↗</a>
+            </div>
+        </div>
+
         <div class="card">
-            <h2>📥 Datos Mensuales del Negocio</h2>
+            <h2>📥 Ingresos y Nómina</h2>
             <div class="form-group">
-                <label for="ingresos">Ingresos Totales (Ventas)</label>
+                <label for="ingresos">Ingresos Totales (Ventas, CUP)</label>
                 <div class="input-wrapper">
                     <span class="input-prefix">CUP</span>
-                    <input type="number" id="ingresos" value="150000" oninput="calcularDashboard(); scheduleSave();">
+                    <input class="with-prefix" type="number" id="ingresos" value="150000" oninput="calcularTodo(); scheduleSaveDebounced();">
                 </div>
             </div>
             <div class="form-group">
-                <label for="cogs">Costos Directos (Materia Prima / Inventario)</label>
+                <label for="nomina">Gastos de Personal (Nómina, CUP)</label>
                 <div class="input-wrapper">
                     <span class="input-prefix">CUP</span>
-                    <input type="number" id="cogs" value="60000" oninput="calcularDashboard(); scheduleSave();">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="nomina">Gastos de Personal (Nómina / Trabajadores)</label>
-                <div class="input-wrapper">
-                    <span class="input-prefix">CUP</span>
-                    <input type="number" id="nomina" value="25000" oninput="calcularDashboard(); scheduleSave();">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="fijos">Otros Gastos Fijos (Alquiler, Luz, Transporte)</label>
-                <div class="input-wrapper">
-                    <span class="input-prefix">CUP</span>
-                    <input type="number" id="fijos" value="15000" oninput="calcularDashboard(); scheduleSave();">
+                    <input class="with-prefix" type="number" id="nomina" value="25000" oninput="calcularTodo(); scheduleSaveDebounced();">
                 </div>
             </div>
             <div class="form-group">
                 <label for="crecimiento">Tasa de Crecimiento Mensual Estimada</label>
                 <div class="range-container">
-                    <input type="range" id="crecimiento" min="-20" max="50" value="5" oninput="updateRangeVal('crecimiento-val', this.value); calcularDashboard(); scheduleSave();">
+                    <input type="range" id="crecimiento" min="-20" max="50" value="5" oninput="updateRangeVal('crecimiento-val', this.value); calcularTodo(); scheduleSaveDebounced();">
                     <span id="crecimiento-val" class="range-value">5%</span>
                 </div>
             </div>
         </div>
 
         <div class="card">
-            <h2>📈 Diagnóstico, Margen y ONAT</h2>
-            <div class="metric">
-                <span class="metric-label">Margen Bruto:</span>
-                <span id="lbl-margen-bruto" class="metric-value">0%</span>
-            </div>
+            <h2>📦 Materias Primas / Inventario</h2>
+            <div id="mp-list"></div>
+            <button onclick="addFila('mp-list')" style="background:var(--bg-color); border:1px dashed var(--border); width:100%; padding:10px; border-radius:8px; cursor:pointer;">+ Agregar materia prima</button>
+            <div class="list-total">Total: <span id="mp-total">0 CUP</span></div>
+        </div>
 
+        <div class="card">
+            <h2>🏠 Otros Gastos Fijos</h2>
+            <div id="gf-list"></div>
+            <button onclick="addFila('gf-list')" style="background:var(--bg-color); border:1px dashed var(--border); width:100%; padding:10px; border-radius:8px; cursor:pointer;">+ Agregar gasto fijo</button>
+            <div class="list-total">Total: <span id="gf-total">0 CUP</span></div>
+        </div>
+
+        <div class="card" style="grid-column: 1 / -1;">
+            <h2>📈 Diagnóstico, Margen y ONAT</h2>
+            <div class="metric"><span class="metric-label">Margen Bruto:</span><span id="lbl-margen-bruto" class="metric-value">0%</span></div>
             <div style="margin: 15px 0; padding: 12px; background-color: #f8fafc; border-radius: 8px; border-left: 4px solid var(--accent);">
                 <strong style="color: var(--accent); font-size: 0.9rem; display: block; margin-bottom: 5px;">MÓDULO DE RETENCIÓN ONAT (MENSUAL)</strong>
-                <div class="metric" style="padding: 4px 0; border: none;">
-                    <span class="metric-label" style="font-size: 0.85rem;">Impuesto sobre Ingresos Brutos (10%):</span>
-                    <span id="lbl-onat-ingresos" style="font-size: 0.95rem; font-weight: 600;">0 CUP</span>
-                </div>
-                <div class="metric" style="padding: 4px 0; border: none;">
-                    <span class="metric-label" style="font-size: 0.85rem;">Impuesto Fuerza de Trabajo (5% s/ Nómina):</span>
-                    <span id="lbl-onat-fuerza" style="font-size: 0.95rem; font-weight: 600;">0 CUP</span>
-                </div>
-                <div class="metric" style="padding: 4px 0; border: none; margin-top: 5px; border-top: 1px dashed #cbd5e1;">
-                    <span class="metric-label" style="font-size: 0.9rem; font-weight: bold;">Total Guardar para ONAT:</span>
-                    <span id="lbl-onat-total" style="font-size: 1rem; font-weight: bold; color: var(--danger);">0 CUP</span>
-                </div>
+                <div class="metric" style="padding: 4px 0; border: none;"><span class="metric-label" style="font-size: 0.85rem;">Impuesto sobre Ingresos Brutos (10%):</span><span id="lbl-onat-ingresos" style="font-size: 0.95rem; font-weight: 600;">0 CUP</span></div>
+                <div class="metric" style="padding: 4px 0; border: none;"><span class="metric-label" style="font-size: 0.85rem;">Impuesto Fuerza de Trabajo (5% s/ Nómina):</span><span id="lbl-onat-fuerza" style="font-size: 0.95rem; font-weight: 600;">0 CUP</span></div>
+                <div class="metric" style="padding: 4px 0; border: none; margin-top: 5px; border-top: 1px dashed #cbd5e1;"><span class="metric-label" style="font-size: 0.9rem; font-weight: bold;">Total Guardar para ONAT:</span><span id="lbl-onat-total" style="font-size: 1rem; font-weight: bold; color: var(--danger);">0 CUP</span></div>
             </div>
-
-            <div class="metric">
-                <span class="metric-label">Utilidad Neta (Ganancia Real):</span>
-                <span id="lbl-utilidad-neta" class="metric-value">0 CUP</span>
-            </div>
-            <div class="metric">
-                <span class="metric-label">Margen Neto Limpio:</span>
-                <span id="lbl-margen-neto" class="metric-value">0%</span>
-            </div>
-            <div class="metric">
-                <span class="metric-label">Punto de Equilibrio Mínimo:</span>
-                <span id="lbl-breakeven" class="metric-value" style="color: var(--primary);">0 CUP</span>
-            </div>
-
+            <div class="metric"><span class="metric-label">Utilidad Neta (Ganancia Real):</span><span id="lbl-utilidad-neta" class="metric-value">0 CUP</span></div>
+            <div class="metric"><span class="metric-label">Margen Neto Limpio:</span><span id="lbl-margen-neto" class="metric-value">0%</span></div>
+            <div class="metric"><span class="metric-label">Punto de Equilibrio Mínimo:</span><span id="lbl-breakeven" class="metric-value" style="color: var(--primary);">0 CUP</span></div>
             <div id="status-salud" class="status-badge">Calculando...</div>
-
-            <h3 style="margin-top: 20px; font-size: 1rem; color: var(--text-main);">Proyección Estimada a 3 Meses</h3>
+            <h3 style="margin-top: 20px; font-size: 1rem;">Proyección Estimada a 3 Meses</h3>
             <table class="projections-table">
-                <thead>
-                    <tr>
-                        <th>Mes</th>
-                        <th>Ventas Est.</th>
-                        <th>Ganancia Real Est.</th>
-                    </tr>
-                </thead>
-                <tbody id="projections-body">
-                    <!-- Dinámico -->
-                </tbody>
+                <thead><tr><th>Mes</th><th>Ventas Est.</th><th>Ganancia Real Est.</th></tr></thead>
+                <tbody id="projections-body"></tbody>
             </table>
+            <div class="toolbar" style="margin-top:20px;">
+                <button onclick="exportarCSV()">⬇️ Exportar todo (CSV / Excel)</button>
+                <button onclick="window.print()">🖨️ Guardar como PDF</button>
+            </div>
         </div>
     </div>
 
-    <!-- PESTAÑA 2: FICHA DE COSTO -->
+    <!-- TAB 2: FICHAS DE COSTO -->
     <div id="fichacosto" class="tab-content">
+        <div class="card" style="grid-column: 1 / -1;">
+            <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                <div class="form-group" style="flex:1; min-width:200px; margin-bottom:0;">
+                    <label for="ficha-selector">Producto / Servicio</label>
+                    <select id="ficha-selector" onchange="seleccionarFicha(this.value)"></select>
+                </div>
+                <button class="btn-accent" onclick="nuevaFicha()">+ Nuevo producto</button>
+                <button class="btn-danger-outline" onclick="eliminarFichaActual()">Eliminar este producto</button>
+            </div>
+        </div>
+
         <div class="card">
-            <h2>📋 Configuración de Ficha de Costo</h2>
+            <h2>📋 Costos de Producción</h2>
             <div class="form-group">
-                <label for="prod-nombre">Nombre del Producto / Servicio</label>
-                <input type="text" id="prod-nombre" value="Pizza Margherita Especial" oninput="scheduleSave();">
+                <label for="ficha-nombre">Nombre del Producto / Servicio</label>
+                <input type="text" id="ficha-nombre" value="Producto nuevo" oninput="guardarFichaActual();">
             </div>
-            <div class="form-group">
-                <label for="costo-materia">Materia Prima Directa (Ingredientes, materiales)</label>
-                <div class="input-wrapper">
-                    <span class="input-prefix">CUP</span>
-                    <input type="number" id="costo-materia" value="250" oninput="calcularFicha(); scheduleSave();">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="costo-envase">Envase, Desechables y Despacho</label>
-                <div class="input-wrapper">
-                    <span class="input-prefix">CUP</span>
-                    <input type="number" id="costo-envase" value="40" oninput="calcularFicha(); scheduleSave();">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="costo-mano">Mano de Obra Directa (Por unidad producida)</label>
-                <div class="input-wrapper">
-                    <span class="input-prefix">CUP</span>
-                    <input type="number" id="costo-mano" value="60" oninput="calcularFicha(); scheduleSave();">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="costo-indirecto">Costos Indirectos Prorrateados (Luz, gas, depreciación)</label>
-                <div class="input-wrapper">
-                    <span class="input-prefix">CUP</span>
-                    <input type="number" id="costo-indirecto" value="30" oninput="calcularFicha(); scheduleSave();">
-                </div>
-            </div>
-            <div class="form-group">
+            <div id="ficha-items-list"></div>
+            <button onclick="addFila('ficha-items-list')" style="background:var(--bg-color); border:1px dashed var(--border); width:100%; padding:10px; border-radius:8px; cursor:pointer; margin-bottom:10px;">+ Agregar costo (materia prima, envase, mano de obra, etc.)</button>
+            <div class="form-group" style="margin-top:16px;">
                 <label for="margen-deseado">Margen de Ganancia Neto Deseado</label>
                 <div class="range-container">
-                    <input type="range" id="margen-deseado" min="10" max="150" value="40" oninput="updateRangeVal('margen-deseado-val', this.value + '%'); calcularFicha(); scheduleSave();">
+                    <input type="range" id="margen-deseado" min="10" max="150" value="40" oninput="updateRangeVal('margen-deseado-val', this.value + '%'); calcularFichaActual(); guardarFichaActual();">
                     <span id="margen-deseado-val" class="range-value">40%</span>
                 </div>
             </div>
@@ -522,93 +241,62 @@
                 <h1 id="lbl-precio-final" style="font-size: 2.5rem; margin: 5px 0;">0.00 CUP</h1>
                 <p style="font-size: 0.85rem; opacity: 0.8;">Este precio ya protege tu margen y absorbe el 10% de la ONAT</p>
             </div>
-
-            <div class="metric">
-                <span class="metric-label">Costo Total de Producción:</span>
-                <span id="lbl-costo-total" class="metric-value">0 CUP</span>
-            </div>
-            <div class="metric">
-                <span class="metric-label">Aporte de Impuesto ONAT (10% Incluido):</span>
-                <span id="lbl-onat-unitario" class="metric-value" style="color: var(--danger);">0 CUP</span>
-            </div>
-            <div class="metric">
-                <span class="metric-label">Tu Ganancia Limpia (Por unidad):</span>
-                <span id="lbl-ganancia-unitaria" class="metric-value" style="color: var(--success);">0 CUP</span>
-            </div>
-
+            <div class="metric"><span class="metric-label">Costo Total de Producción:</span><span id="lbl-costo-total" class="metric-value">0 CUP</span></div>
+            <div class="metric"><span class="metric-label">Aporte de Impuesto ONAT (10% Incluido):</span><span id="lbl-onat-unitario" class="metric-value" style="color: var(--danger);">0 CUP</span></div>
+            <div class="metric"><span class="metric-label">Tu Ganancia Limpia (Por unidad):</span><span id="lbl-ganancia-unitaria" class="metric-value" style="color: var(--success);">0 CUP</span></div>
             <div style="margin-top: 25px; padding: 15px; background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; font-size: 0.9rem; color: #166534;">
-                <strong>💡 Recomendación del Analista:</strong> Si fijas el precio según el mercado por debajo del costo sugerido, estarás perdiendo dinero o trabajando para pagar impuestos. Ajusta tu margen o reduce costos de materia prima.
+                <strong>💡 Recomendación:</strong> Si el precio de mercado queda por debajo del sugerido, estás perdiendo dinero o trabajando para pagar impuestos.
             </div>
         </div>
     </div>
 
-    <!-- PESTAÑA 3: HISTORIAL MENSUAL -->
+    <!-- TAB 3: HISTORIAL -->
     <div id="historial" class="tab-content">
         <div class="card" style="grid-column: 1 / -1;">
             <h2>📅 Historial Mensual del Negocio</h2>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">
-                Guarda una "foto" de tus resultados cada mes para llevar un registro y comparar tu evolución con el tiempo.
-            </p>
-
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">Guarda una foto de tus resultados cada mes. Puedes borrar registros de prueba o cortes parciales antes de guardar el cierre final del mes.</p>
             <div class="form-group" style="max-width: 260px;">
                 <label for="mes-a-guardar">Mes que vas a guardar</label>
                 <input type="month" id="mes-a-guardar">
             </div>
-            <button onclick="guardarMesActual()" style="background-color: var(--accent); color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 10px;">
-                💾 Guardar este mes en mi historial
-            </button>
-            <div id="historial-guardar-status" style="font-size: 0.85rem; color: var(--text-muted); min-height: 18px;"></div>
+            <button class="btn-accent" onclick="guardarMesActual()">💾 Guardar este mes en mi historial</button>
+            <div id="historial-guardar-status" style="font-size: 0.85rem; color: var(--text-muted); min-height: 18px; margin-top:6px;"></div>
 
-            <h3 style="margin-top: 24px; font-size: 1rem; color: var(--text-main);">Meses guardados</h3>
+            <h3 style="margin-top: 24px; font-size: 1rem;">Meses guardados</h3>
             <table class="projections-table">
-                <thead>
-                    <tr>
-                        <th>Mes</th>
-                        <th>Ingresos</th>
-                        <th>Ganancia Real</th>
-                        <th>Margen Neto</th>
-                        <th>ONAT</th>
-                    </tr>
-                </thead>
-                <tbody id="historial-body">
-                    <tr><td colspan="5" style="color: var(--text-muted);">Aún no has guardado ningún mes.</td></tr>
-                </tbody>
+                <thead><tr><th>Mes</th><th>Ingresos</th><th>Ganancia Real</th><th>Margen Neto</th><th>ONAT</th><th></th></tr></thead>
+                <tbody id="historial-body"><tr><td colspan="6" style="color: var(--text-muted);">Aún no has guardado ningún mes.</td></tr></tbody>
             </table>
         </div>
     </div>
-    <!-- PESTAÑA 4: RENOVAR ACCESO -->
+
+    <!-- TAB 4: RENOVAR ACCESO -->
     <div id="renovar" class="tab-content">
         <div class="card">
             <h2>💳 Planes Disponibles</h2>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
-                Elige tu plan, escanea el código de pago y avísame por WhatsApp para activarte al instante.
-            </p>
-
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Elige tu plan, escanea el código de pago y avísame por WhatsApp para activarte al instante.</p>
             <div style="border: 2px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 14px;">
                 <strong style="color: var(--primary);">Plan Inicial</strong>
                 <p style="font-size: 0.85rem; color: var(--text-muted); margin: 6px 0;">Incluye tu primer mes + guía completa en PDF</p>
                 <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px;">1000 CUP</div>
-                <button onclick="solicitarPago('Inicial', '1000')" style="width: 100%; background-color: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Solicitar por WhatsApp</button>
+                <button class="btn-primary" style="width:100%;" onclick="solicitarPago('Inicial', '1000')">Solicitar por WhatsApp</button>
             </div>
-
             <div style="border: 2px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 14px;">
                 <strong style="color: var(--primary);">Plan Mensual</strong>
                 <p style="font-size: 0.85rem; color: var(--text-muted); margin: 6px 0;">Acceso continuo, un mes</p>
                 <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px;">500 CUP</div>
-                <button onclick="solicitarPago('Mensual', '500')" style="width: 100%; background-color: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Solicitar por WhatsApp</button>
+                <button class="btn-primary" style="width:100%;" onclick="solicitarPago('Mensual', '500')">Solicitar por WhatsApp</button>
             </div>
-
             <div style="border: 2px solid var(--accent); border-radius: 12px; padding: 16px; margin-bottom: 10px; background-color: #f0fdfa;">
                 <strong style="color: var(--accent);">Plan Anual ⭐ Mejor precio</strong>
                 <p style="font-size: 0.85rem; color: var(--text-muted); margin: 6px 0;">Acceso por 12 meses, ahorras 2 meses</p>
                 <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px;">5000 CUP</div>
-                <button onclick="solicitarPago('Anual', '5000')" style="width: 100%; background-color: var(--accent); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Solicitar por WhatsApp</button>
+                <button class="btn-accent" style="width:100%;" onclick="solicitarPago('Anual', '5000')">Solicitar por WhatsApp</button>
             </div>
         </div>
-
         <div class="card">
             <h2>📲 Cómo pagar</h2>
-            <ol style="padding-left: 20px; color: var(--text-main); font-size: 0.95rem; line-height: 1.8;">
+            <ol style="padding-left: 20px; font-size: 0.95rem; line-height: 1.8;">
                 <li>Elige tu plan y toca "Solicitar por WhatsApp"</li>
                 <li>Abre Transfermóvil, opción <strong>Transferencia</strong></li>
                 <li>Escanea el código de abajo</li>
@@ -622,64 +310,119 @@
         </div>
     </div>
 
-    <div class="footer">
-        <p>Desarrollado con precisión financiera para el ecosistema privado cubano. © 2026</p>
-    </div>
+    <div class="footer"><p>Desarrollado con precisión financiera para el ecosistema privado cubano. © 2026</p></div>
 </div>
 </div>
 
 <script>
-    // ======= CONFIGURACIÓN: PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT =======
-    const CONFIG = {
-        API_URL: "https://script.google.com/macros/s/AKfycbwx0K39TUu0sc6wl36AjqRu0WHmTI_K7MMzFd5OnBA769rIy4vlLKiQhTQS51qhRe8bdQ/exec"
-    };
-    // =======================================================================
-
-    let currentCode = null;
-    let saveTimeout = null;
-    let isLoadingData = false;
-
-    const FIELD_IDS = [
-        'ingresos','cogs','nomina','fijos','crecimiento',
-        'prod-nombre','costo-materia','costo-envase','costo-mano','costo-indirecto','margen-deseado'
-    ];
+    var CONFIG = { API_URL: "PEGA_AQUI_TU_URL_DE_APPS_SCRIPT" };
+    var currentCode = null;
+    var saveTimeout = null;
+    var isLoadingData = false;
+    var ultimaTasaGuardada = null;
+    var fichas = [];
+    var currentFichaId = null;
+    var fichaCounter = 0;
 
     function switchTab(tabId) {
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(function(btn) { btn.classList.remove('active'); });
+        document.querySelectorAll('.tab-content').forEach(function(content) { content.classList.remove('active'); });
         event.currentTarget.classList.add('active');
         document.getElementById(tabId).classList.add('active');
     }
 
-    function updateRangeVal(id, val) {
-        document.getElementById(id).innerText = val;
-    }
+    function updateRangeVal(id, val) { document.getElementById(id).innerText = val; }
 
     function formatCUP(val) {
-        return new Intl.NumberFormat('es-CU', { style: 'currency', currency: 'CUP' }).format(val);
+        return new Intl.NumberFormat('es-CU', { style: 'currency', currency: 'CUP' }).format(val || 0);
     }
 
-    function calcularDashboard() {
-        const ingresos = parseFloat(document.getElementById('ingresos').value) || 0;
-        const cogs = parseFloat(document.getElementById('cogs').value) || 0;
-        const nomina = parseFloat(document.getElementById('nomina').value) || 0;
-        const fijos = parseFloat(document.getElementById('fijos').value) || 0;
-        const crecimiento = (parseFloat(document.getElementById('crecimiento').value) || 0) / 100;
+    function escapeAttr(s) {
+        return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
 
-        const utilidadBruta = ingresos - cogs;
-        const margenBruto = ingresos > 0 ? (utilidadBruta / ingresos) * 100 : 0;
+    // ======= LISTAS DINÁMICAS (materia prima, gastos fijos, items de ficha) =======
 
-        const onatIngresos = ingresos * 0.10;
-        const onatFuerza = nomina * 0.05;
-        const onatTotal = onatIngresos + onatFuerza;
+    function crearFilaHTML(nombre, monto, moneda) {
+        return '<div class="item-row">' +
+            '<input type="text" class="item-nombre" placeholder="Nombre" value="' + escapeAttr(nombre) + '" oninput="onListaCambio();">' +
+            '<input type="number" class="item-monto" placeholder="Monto" value="' + (monto || 0) + '" oninput="onListaCambio();">' +
+            '<select class="item-moneda" onchange="onListaCambio();">' +
+                '<option value="CUP"' + (moneda === 'USD' ? '' : ' selected') + '>CUP</option>' +
+                '<option value="USD"' + (moneda === 'USD' ? ' selected' : '') + '>USD</option>' +
+            '</select>' +
+            '<button class="btn-small-danger" onclick="this.closest(\'.item-row\').remove(); onListaCambio();">✕</button>' +
+        '</div>';
+    }
 
-        const gastosOperativosTotales = nomina + fijos;
-        const utilidadNeta = ingresos - cogs - gastosOperativosTotales - onatTotal;
-        const margenNeto = ingresos > 0 ? (utilidadNeta / ingresos) * 100 : 0;
+    function addFila(containerId, nombre, monto, moneda) {
+        var container = document.getElementById(containerId);
+        container.insertAdjacentHTML('beforeend', crearFilaHTML(nombre || '', monto || 0, moneda || 'CUP'));
+        onListaCambio();
+    }
 
-        const margenContribucionEfectivo = ingresos > 0 ? (ingresos - cogs - (ingresos * 0.10)) / ingresos : 0;
-        const costosFijosEfectivos = fijos + nomina + (nomina * 0.05);
-        const breakeven = margenContribucionEfectivo > 0 ? costosFijosEfectivos / margenContribucionEfectivo : 0;
+    function leerLista(containerId) {
+        var items = [];
+        document.querySelectorAll('#' + containerId + ' .item-row').forEach(function(row) {
+            items.push({
+                nombre: row.querySelector('.item-nombre').value,
+                monto: parseFloat(row.querySelector('.item-monto').value) || 0,
+                moneda: row.querySelector('.item-moneda').value
+            });
+        });
+        return items;
+    }
+
+    function pintarLista(containerId, items) {
+        var container = document.getElementById(containerId);
+        container.innerHTML = '';
+        (items || []).forEach(function(it) {
+            container.insertAdjacentHTML('beforeend', crearFilaHTML(it.nombre, it.monto, it.moneda));
+        });
+    }
+
+    function sumarListaCUP(containerId, tasa) {
+        var total = 0;
+        leerLista(containerId).forEach(function(it) {
+            total += it.moneda === 'USD' ? it.monto * tasa : it.monto;
+        });
+        return total;
+    }
+
+    function onListaCambio() {
+        calcularTodo();
+        calcularFichaActual();
+        scheduleSaveDebounced();
+        guardarFichaActual();
+    }
+
+    // ======= CÁLCULO PRINCIPAL (RESUMEN GENERAL) =======
+
+    function calcularTodo() {
+        var tasa = parseFloat(document.getElementById('tasa-cambio').value) || 1;
+        var ingresos = parseFloat(document.getElementById('ingresos').value) || 0;
+        var nomina = parseFloat(document.getElementById('nomina').value) || 0;
+        var crecimiento = (parseFloat(document.getElementById('crecimiento').value) || 0) / 100;
+
+        var totalMP = sumarListaCUP('mp-list', tasa);
+        var totalGF = sumarListaCUP('gf-list', tasa);
+        document.getElementById('mp-total').innerText = formatCUP(totalMP);
+        document.getElementById('gf-total').innerText = formatCUP(totalGF);
+
+        var utilidadBruta = ingresos - totalMP;
+        var margenBruto = ingresos > 0 ? (utilidadBruta / ingresos) * 100 : 0;
+
+        var onatIngresos = ingresos * 0.10;
+        var onatFuerza = nomina * 0.05;
+        var onatTotal = onatIngresos + onatFuerza;
+
+        var gastosOperativosTotales = nomina + totalGF;
+        var utilidadNeta = ingresos - totalMP - gastosOperativosTotales - onatTotal;
+        var margenNeto = ingresos > 0 ? (utilidadNeta / ingresos) * 100 : 0;
+
+        var margenContribucionEfectivo = ingresos > 0 ? (ingresos - totalMP - (ingresos * 0.10)) / ingresos : 0;
+        var costosFijosEfectivos = totalGF + nomina + (nomina * 0.05);
+        var breakeven = margenContribucionEfectivo > 0 ? costosFijosEfectivos / margenContribucionEfectivo : 0;
 
         document.getElementById('lbl-margen-bruto').innerText = margenBruto.toFixed(1) + '%';
         document.getElementById('lbl-onat-ingresos').innerText = formatCUP(onatIngresos);
@@ -689,7 +432,7 @@
         document.getElementById('lbl-margen-neto').innerText = margenNeto.toFixed(1) + '%';
         document.getElementById('lbl-breakeven').innerText = formatCUP(breakeven);
 
-        const statusEl = document.getElementById('status-salud');
+        var statusEl = document.getElementById('status-salud');
         statusEl.className = 'status-badge';
         if (utilidadNeta < 0) {
             statusEl.innerText = "🚨 Riesgo Crítico: Pérdida o Camino a la Quiebra";
@@ -702,39 +445,107 @@
             statusEl.classList.add('bg-success');
         }
 
-        let htmlProyecciones = '';
-        let currentVentas = ingresos;
-        let currentNeto = utilidadNeta;
-        for (let m = 1; m <= 3; m++) {
+        var htmlProyecciones = '';
+        var currentVentas = ingresos;
+        var currentNeto = utilidadNeta;
+        for (var m = 1; m <= 3; m++) {
             currentVentas = currentVentas * (1 + crecimiento);
             currentNeto = currentNeto * (1 + crecimiento);
-            htmlProyecciones += `<tr>
-                <td>Mes +${m}</td>
-                <td>${formatCUP(currentVentas)}</td>
-                <td style="font-weight:bold; color:${currentNeto >= 0 ? 'var(--success)' : 'var(--danger)'}">${formatCUP(currentNeto)}</td>
-            </tr>`;
+            htmlProyecciones += '<tr><td>Mes +' + m + '</td><td>' + formatCUP(currentVentas) + '</td>' +
+                '<td style="font-weight:bold; color:' + (currentNeto >= 0 ? 'var(--success)' : 'var(--danger)') + '">' + formatCUP(currentNeto) + '</td></tr>';
         }
         document.getElementById('projections-body').innerHTML = htmlProyecciones;
+
+        chequearAlertaTasa(tasa);
     }
 
-    function calcularFicha() {
-        const materia = parseFloat(document.getElementById('costo-materia').value) || 0;
-        const envase = parseFloat(document.getElementById('costo-envase').value) || 0;
-        const mano = parseFloat(document.getElementById('costo-mano').value) || 0;
-        const indirecto = parseFloat(document.getElementById('costo-indirecto').value) || 0;
-        const margenDeseado = (parseFloat(document.getElementById('margen-deseado').value) || 0) / 100;
-
-        const costoTotal = materia + envase + mano + indirecto;
-        const divisor = 1 - margenDeseado - 0.10;
-        let precioFinal = 0;
-        if (divisor > 0) {
-            precioFinal = costoTotal / divisor;
-        } else {
-            precioFinal = costoTotal / 0.1;
+    function chequearAlertaTasa(tasaActual) {
+        var banner = document.getElementById('alerta-tasa');
+        if (ultimaTasaGuardada && ultimaTasaGuardada > 0) {
+            var cambioPorc = Math.abs(tasaActual - ultimaTasaGuardada) / ultimaTasaGuardada * 100;
+            if (cambioPorc >= 2) {
+                banner.innerText = '⚠️ La tasa cambió de ' + ultimaTasaGuardada + ' a ' + tasaActual + ' CUP/USD desde tu último cálculo guardado. Tus precios en Fichas de Costo ya se recalcularon con la nueva tasa — revísalos.';
+                banner.classList.add('show');
+                return;
+            }
         }
+        banner.classList.remove('show');
+    }
 
-        const onatUnitario = precioFinal * 0.10;
-        const gananciaUnitaria = precioFinal - costoTotal - onatUnitario;
+    // ======= FICHAS DE COSTO (MÚLTIPLES PRODUCTOS) =======
+
+    function renderSelectorFichas() {
+        var sel = document.getElementById('ficha-selector');
+        sel.innerHTML = '';
+        fichas.forEach(function(f) {
+            var opt = document.createElement('option');
+            opt.value = f.id;
+            opt.innerText = f.nombre || 'Sin nombre';
+            if (f.id === currentFichaId) opt.selected = true;
+            sel.appendChild(opt);
+        });
+    }
+
+    function nuevaFicha() {
+        fichaCounter++;
+        var nueva = { id: 'f' + Date.now() + '_' + fichaCounter, nombre: 'Producto nuevo', items: [], margenDeseado: 40 };
+        fichas.push(nueva);
+        currentFichaId = nueva.id;
+        renderSelectorFichas();
+        cargarFichaEnFormulario(nueva);
+        guardarFichasEnServidor();
+    }
+
+    function seleccionarFicha(id) {
+        currentFichaId = id;
+        var f = fichas.filter(function(x) { return x.id === id; })[0];
+        if (f) cargarFichaEnFormulario(f);
+    }
+
+    function cargarFichaEnFormulario(f) {
+        isLoadingData = true;
+        document.getElementById('ficha-nombre').value = f.nombre || '';
+        pintarLista('ficha-items-list', f.items || []);
+        document.getElementById('margen-deseado').value = f.margenDeseado || 40;
+        document.getElementById('margen-deseado-val').innerText = (f.margenDeseado || 40) + '%';
+        isLoadingData = false;
+        calcularFichaActual();
+    }
+
+    function guardarFichaActual() {
+        if (isLoadingData || !currentFichaId) return;
+        var f = fichas.filter(function(x) { return x.id === currentFichaId; })[0];
+        if (!f) return;
+        f.nombre = document.getElementById('ficha-nombre').value;
+        f.items = leerLista('ficha-items-list');
+        f.margenDeseado = parseFloat(document.getElementById('margen-deseado').value) || 40;
+        renderSelectorFichas();
+        guardarFichasEnServidor();
+    }
+
+    function eliminarFichaActual() {
+        if (!currentFichaId) return;
+        if (!confirm('¿Eliminar este producto y su ficha de costo?')) return;
+        fichas = fichas.filter(function(x) { return x.id !== currentFichaId; });
+        if (fichas.length > 0) {
+            currentFichaId = fichas[0].id;
+            renderSelectorFichas();
+            cargarFichaEnFormulario(fichas[0]);
+        } else {
+            nuevaFicha();
+        }
+        guardarFichasEnServidor();
+    }
+
+    function calcularFichaActual() {
+        var tasa = parseFloat(document.getElementById('tasa-cambio').value) || 1;
+        var costoTotal = sumarListaCUP('ficha-items-list', tasa);
+        var margenDeseado = (parseFloat(document.getElementById('margen-deseado').value) || 0) / 100;
+
+        var divisor = 1 - margenDeseado - 0.10;
+        var precioFinal = divisor > 0 ? costoTotal / divisor : costoTotal / 0.1;
+        var onatUnitario = precioFinal * 0.10;
+        var gananciaUnitaria = precioFinal - costoTotal - onatUnitario;
 
         document.getElementById('lbl-costo-total').innerText = formatCUP(costoTotal);
         document.getElementById('lbl-precio-final').innerText = formatCUP(precioFinal);
@@ -742,36 +553,50 @@
         document.getElementById('lbl-ganancia-unitaria').innerText = formatCUP(gananciaUnitaria);
     }
 
-    // ======= SISTEMA DE CÓDIGO / SINCRONIZACIÓN =======
-
-    function collectFormData() {
-        const data = {};
-        FIELD_IDS.forEach(id => {
-            data[id] = document.getElementById(id).value;
-        });
-        return data;
+    async function guardarFichasEnServidor() {
+        if (!currentCode) return;
+        try {
+            await fetch(CONFIG.API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ action: 'saveFichas', code: currentCode, fichas: fichas })
+            });
+        } catch (e) { console.error('Error guardando fichas', e); }
     }
 
-    function populateForm(data) {
+    // ======= SINCRONIZACIÓN PRINCIPAL =======
+
+    function recolectarPrincipal() {
+        return {
+            tasa: parseFloat(document.getElementById('tasa-cambio').value) || 0,
+            ingresos: parseFloat(document.getElementById('ingresos').value) || 0,
+            nomina: parseFloat(document.getElementById('nomina').value) || 0,
+            crecimiento: parseFloat(document.getElementById('crecimiento').value) || 0,
+            materiasPrimas: leerLista('mp-list'),
+            gastosFijos: leerLista('gf-list')
+        };
+    }
+
+    function aplicarPrincipal(p) {
         isLoadingData = true;
-        FIELD_IDS.forEach(id => {
-            if (data[id] !== undefined && data[id] !== '' && data[id] !== null) {
-                document.getElementById(id).value = data[id];
-            }
-        });
-        document.getElementById('crecimiento-val').innerText = document.getElementById('crecimiento').value + '%';
-        document.getElementById('margen-deseado-val').innerText = document.getElementById('margen-deseado').value + '%';
-        calcularDashboard();
-        calcularFicha();
+        document.getElementById('tasa-cambio').value = p.tasa || 320;
+        document.getElementById('ingresos').value = p.ingresos || 0;
+        document.getElementById('nomina').value = p.nomina || 0;
+        document.getElementById('crecimiento').value = p.crecimiento || 5;
+        document.getElementById('crecimiento-val').innerText = (p.crecimiento || 5) + '%';
+        pintarLista('mp-list', p.materiasPrimas || []);
+        pintarLista('gf-list', p.gastosFijos || []);
+        ultimaTasaGuardada = p.tasa || null;
         isLoadingData = false;
+        calcularTodo();
     }
 
     async function loadData(code) {
-        const loadingEl = document.getElementById('login-loading');
+        var loadingEl = document.getElementById('login-loading');
         if (loadingEl) loadingEl.innerText = 'Cargando tus datos...';
         try {
-            const res = await fetch(`${CONFIG.API_URL}?action=get&code=${encodeURIComponent(code)}`);
-            const json = await res.json();
+            var res = await fetch(CONFIG.API_URL + '?action=get&code=' + encodeURIComponent(code));
+            var json = await res.json();
 
             if (json && json.found && json.activo === false) {
                 document.getElementById('main-app').style.display = 'none';
@@ -782,38 +607,49 @@
                 return;
             }
 
-            if (json && json.found) {
-                populateForm(json.data);
+            if (json && json.principal) {
+                aplicarPrincipal(json.principal);
             } else {
-                calcularDashboard();
-                calcularFicha();
+                pintarLista('mp-list', [{ nombre: 'Materia prima principal', monto: 0, moneda: 'CUP' }]);
+                pintarLista('gf-list', [{ nombre: 'Alquiler', monto: 0, moneda: 'CUP' }]);
+                calcularTodo();
             }
+
+            fichas = (json && json.fichas && json.fichas.length) ? json.fichas : [];
+            if (fichas.length === 0) {
+                fichaCounter++;
+                fichas.push({ id: 'f' + Date.now() + '_' + fichaCounter, nombre: 'Producto nuevo', items: [], margenDeseado: 40 });
+            }
+            currentFichaId = fichas[0].id;
+            renderSelectorFichas();
+            cargarFichaEnFormulario(fichas[0]);
+
             cargarHistorial(code);
         } catch (e) {
             console.error('Error cargando datos', e);
-            calcularDashboard();
-            calcularFicha();
+            calcularTodo();
         }
         if (loadingEl) loadingEl.innerText = '';
     }
 
-    function scheduleSave() {
+    function scheduleSaveDebounced() {
         if (isLoadingData || !currentCode) return;
         clearTimeout(saveTimeout);
-        const statusEl = document.getElementById('sync-status');
+        var statusEl = document.getElementById('sync-status');
         if (statusEl) statusEl.innerText = 'Guardando...';
-        saveTimeout = setTimeout(() => saveData(currentCode), 1200);
+        saveTimeout = setTimeout(function() { guardarPrincipal(currentCode); }, 1200);
     }
 
-    async function saveData(code) {
-        const data = collectFormData();
-        const statusEl = document.getElementById('sync-status');
+    async function guardarPrincipal(code) {
+        var principal = recolectarPrincipal();
+        var statusEl = document.getElementById('sync-status');
         try {
             await fetch(CONFIG.API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify({ code, data })
+                body: JSON.stringify({ action: 'save', code: code, principal: principal })
             });
+            ultimaTasaGuardada = principal.tasa;
             if (statusEl) statusEl.innerText = 'Guardado ✓';
         } catch (e) {
             console.error('Error guardando', e);
@@ -821,66 +657,65 @@
         }
     }
 
+    // ======= HISTORIAL =======
+
     async function cargarHistorial(code) {
         try {
-            const res = await fetch(`${CONFIG.API_URL}?action=getHistorial&code=${encodeURIComponent(code)}`);
-            const json = await res.json();
+            var res = await fetch(CONFIG.API_URL + '?action=getHistorial&code=' + encodeURIComponent(code));
+            var json = await res.json();
             renderHistorial(json.historial || []);
-        } catch (e) {
-            console.error('Error cargando historial', e);
-        }
+        } catch (e) { console.error('Error cargando historial', e); }
     }
 
     function renderHistorial(rows) {
-        const body = document.getElementById('historial-body');
+        var body = document.getElementById('historial-body');
         if (!rows.length) {
-            body.innerHTML = '<tr><td colspan="5" style="color: var(--text-muted);">Aún no has guardado ningún mes.</td></tr>';
+            body.innerHTML = '<tr><td colspan="6" style="color: var(--text-muted);">Aún no has guardado ningún mes.</td></tr>';
             return;
         }
-        let html = '';
-        rows.forEach(r => {
-            const neto = parseFloat(r.utilidadNeta) || 0;
-            html += `<tr>
-                <td>${r.mes}</td>
-                <td>${formatCUP(parseFloat(r.ingresos) || 0)}</td>
-                <td style="font-weight:bold; color:${neto >= 0 ? 'var(--success)' : 'var(--danger)'}">${formatCUP(neto)}</td>
-                <td>${(parseFloat(r.margenNeto) || 0).toFixed(1)}%</td>
-                <td>${formatCUP(parseFloat(r.onatTotal) || 0)}</td>
-            </tr>`;
+        var html = '';
+        rows.forEach(function(r) {
+            var s = r.snapshot || {};
+            var neto = parseFloat(s.utilidadNeta) || 0;
+            html += '<tr>' +
+                '<td>' + r.mes + '</td>' +
+                '<td>' + formatCUP(parseFloat(s.ingresos) || 0) + '</td>' +
+                '<td style="font-weight:bold; color:' + (neto >= 0 ? 'var(--success)' : 'var(--danger)') + '">' + formatCUP(neto) + '</td>' +
+                '<td>' + (parseFloat(s.margenNeto) || 0).toFixed(1) + '%</td>' +
+                '<td>' + formatCUP(parseFloat(s.onatTotal) || 0) + '</td>' +
+                '<td><button class="btn-small-danger" onclick="eliminarMes(\'' + r.mes + '\')">✕</button></td>' +
+            '</tr>';
         });
         document.getElementById('historial-body').innerHTML = html;
     }
 
     async function guardarMesActual() {
         if (!currentCode) return;
-        const mesInput = document.getElementById('mes-a-guardar').value;
-        const statusEl = document.getElementById('historial-guardar-status');
-        if (!mesInput) {
-            statusEl.innerText = 'Selecciona el mes primero.';
-            return;
-        }
+        var mesInput = document.getElementById('mes-a-guardar').value;
+        var statusEl = document.getElementById('historial-guardar-status');
+        if (!mesInput) { statusEl.innerText = 'Selecciona el mes primero.'; return; }
 
-        const ingresos = parseFloat(document.getElementById('ingresos').value) || 0;
-        const cogs = parseFloat(document.getElementById('cogs').value) || 0;
-        const nomina = parseFloat(document.getElementById('nomina').value) || 0;
-        const fijos = parseFloat(document.getElementById('fijos').value) || 0;
-        const onatIngresos = ingresos * 0.10;
-        const onatFuerza = nomina * 0.05;
-        const onatTotal = onatIngresos + onatFuerza;
-        const utilidadNeta = ingresos - cogs - nomina - fijos - onatTotal;
-        const margenNeto = ingresos > 0 ? (utilidadNeta / ingresos) * 100 : 0;
+        var tasa = parseFloat(document.getElementById('tasa-cambio').value) || 0;
+        var ingresos = parseFloat(document.getElementById('ingresos').value) || 0;
+        var nomina = parseFloat(document.getElementById('nomina').value) || 0;
+        var totalMP = sumarListaCUP('mp-list', tasa);
+        var totalGF = sumarListaCUP('gf-list', tasa);
+        var onatTotal = (ingresos * 0.10) + (nomina * 0.05);
+        var utilidadNeta = ingresos - totalMP - nomina - totalGF - onatTotal;
+        var margenNeto = ingresos > 0 ? (utilidadNeta / ingresos) * 100 : 0;
+
+        var snapshot = {
+            tasa: tasa, ingresos: ingresos, nomina: nomina,
+            materiasPrimas: leerLista('mp-list'), gastosFijos: leerLista('gf-list'),
+            utilidadNeta: utilidadNeta, margenNeto: margenNeto, onatTotal: onatTotal
+        };
 
         statusEl.innerText = 'Guardando...';
         try {
             await fetch(CONFIG.API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify({
-                    action: 'guardarMes',
-                    code: currentCode,
-                    mes: mesInput,
-                    data: { ingresos, cogs, nomina, fijos, utilidadNeta, margenNeto, onatTotal }
-                })
+                body: JSON.stringify({ action: 'guardarMes', code: currentCode, mes: mesInput, snapshot: snapshot })
             });
             statusEl.innerText = 'Mes guardado ✓';
             cargarHistorial(currentCode);
@@ -889,19 +724,71 @@
             statusEl.innerText = 'Error al guardar el mes.';
         }
     }
+
+    async function eliminarMes(mes) {
+        if (!currentCode) return;
+        if (!confirm('¿Eliminar el registro de ' + mes + '? Esto no se puede deshacer.')) return;
+        try {
+            await fetch(CONFIG.API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ action: 'eliminarMes', code: currentCode, mes: mes })
+            });
+            cargarHistorial(currentCode);
+        } catch (e) { console.error('Error eliminando mes', e); }
+    }
+
+    // ======= EXPORTAR =======
+
+    function exportarCSV() {
+        var lineas = [];
+        lineas.push('SocioFinanzas Pro - Exportacion');
+        lineas.push('Codigo,' + (currentCode || ''));
+        lineas.push('');
+        lineas.push('RESUMEN GENERAL');
+        lineas.push('Tasa de cambio,' + document.getElementById('tasa-cambio').value);
+        lineas.push('Ingresos,' + document.getElementById('ingresos').value);
+        lineas.push('Nomina,' + document.getElementById('nomina').value);
+        lineas.push('');
+        lineas.push('Materias Primas,Monto,Moneda');
+        leerLista('mp-list').forEach(function(it) { lineas.push(it.nombre + ',' + it.monto + ',' + it.moneda); });
+        lineas.push('');
+        lineas.push('Gastos Fijos,Monto,Moneda');
+        leerLista('gf-list').forEach(function(it) { lineas.push(it.nombre + ',' + it.monto + ',' + it.moneda); });
+        lineas.push('');
+        lineas.push('FICHAS DE COSTO');
+        fichas.forEach(function(f) {
+            lineas.push('Producto,' + f.nombre + ',Margen deseado,' + f.margenDeseado + '%');
+            lineas.push('Item,Monto,Moneda');
+            (f.items || []).forEach(function(it) { lineas.push(it.nombre + ',' + it.monto + ',' + it.moneda); });
+            lineas.push('');
+        });
+
+        var csvContent = lineas.join('\n');
+        var blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'sociofinanzas_' + (currentCode || 'export') + '.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    // ======= SESIÓN =======
+
     function solicitarPago(plan, precio) {
-        const codigo = currentCode || '(sin código)';
-        const mensaje = 'Hola, quiero pagar el plan ' + plan + ' (' + precio + ' CUP) para mi código ' + codigo + '. Ya envié la transferencia, adjunto comprobante.';
-        const url = 'https://wa.me/5352742647?text=' + encodeURIComponent(mensaje);
+        var codigo = currentCode || '(sin código)';
+        var mensaje = 'Hola, quiero pagar el plan ' + plan + ' (' + precio + ' CUP) para mi código ' + codigo + '. Ya envié la transferencia, adjunto comprobante.';
+        var url = 'https://wa.me/5352742647?text=' + encodeURIComponent(mensaje);
         window.open(url, '_blank');
     }
+
     function entrarConCodigo() {
-        const codeInput = document.getElementById('login-code').value.trim();
-        const errorEl = document.getElementById('login-error');
-        if (!codeInput) {
-            errorEl.innerText = 'Ingresa tu código.';
-            return;
-        }
+        var codeInput = document.getElementById('login-code').value.trim();
+        var errorEl = document.getElementById('login-error');
+        if (!codeInput) { errorEl.innerText = 'Ingresa tu código.'; return; }
         errorEl.innerText = '';
         currentCode = codeInput;
         localStorage.setItem('sf_code', currentCode);
@@ -921,19 +808,15 @@
         document.getElementById('login-error').innerText = '';
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-        const savedCode = localStorage.getItem('sf_code');
-        if (savedCode) {
-            document.getElementById('login-code').value = savedCode;
-        }
-        const mesInput = document.getElementById('mes-a-guardar');
+    window.addEventListener('DOMContentLoaded', function() {
+        var savedCode = localStorage.getItem('sf_code');
+        if (savedCode) document.getElementById('login-code').value = savedCode;
+        var mesInput = document.getElementById('mes-a-guardar');
         if (mesInput) {
-            const hoy = new Date();
-            const yyyy = hoy.getFullYear();
-            const mm = String(hoy.getMonth() + 1).padStart(2, '0');
-            mesInput.value = `${yyyy}-${mm}`;
+            var hoy = new Date();
+            mesInput.value = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0');
         }
-        document.getElementById('login-code').addEventListener('keydown', (e) => {
+        document.getElementById('login-code').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') entrarConCodigo();
         });
     });
