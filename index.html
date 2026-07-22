@@ -86,12 +86,33 @@
             .tab-content { display: grid !important; }
             body { padding: 0; }
         }
+        #sofia-screen { max-width: 600px; margin: 0 auto; }
+        .sofia-card { background: linear-gradient(180deg, #ffffff, #f8fafc); border: 1px solid var(--border); border-radius: 20px; padding: 32px 24px; box-shadow: 0 8px 24px rgba(30,58,138,0.08); }
+        .sofia-avatar-wrap { display: flex; justify-content: center; margin-bottom: 20px; }
+        .sofia-avatar-img { width: auto; max-height: 180px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 6px 14px rgba(30,58,138,0.18)); }
+        .sofia-conversacion { display: flex; flex-direction: column; }
+        .sofia-msg { opacity: 0; transform: translateY(8px); animation: sofiaFadeIn 0.35s ease forwards; background: white; border: 1px solid var(--border); border-radius: 14px; padding: 12px 16px; margin-bottom: 10px; font-size: 0.95rem; line-height: 1.55; color: var(--text-main); }
+        .sofia-msg.alerta { background: #fffbeb; border-color: #fde68a; }
+        .sofia-msg.recomendacion { background: #f0fdf4; border-color: #bbf7d0; }
+        @keyframes sofiaFadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .sofia-score-card { text-align: center; background: linear-gradient(180deg, #ffffff, #f8fafc); border: 1px solid var(--border); border-radius: 18px; padding: 24px; margin: 16px 0; opacity: 0; transform: translateY(10px) scale(0.96); transition: all 0.5s ease; }
+        .sofia-score-card.show { opacity: 1; transform: translateY(0) scale(1); }
+        .sofia-score-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .sofia-score-num { font-size: 3rem; font-weight: 800; color: var(--primary); }
+        .sofia-score-card.verde .sofia-score-num { color: var(--success); }
+        .sofia-score-card.amarillo .sofia-score-num { color: var(--warning); }
+        .sofia-score-card.rojo .sofia-score-num { color: var(--danger); }
+        .sofia-score-tag { font-weight: bold; margin-top: 6px; font-size: 1rem; }
+        .sofia-boton-wrap { text-align: center; margin-top: 20px; opacity: 0; transform: translateY(10px); transition: all 0.5s ease; }
+        .sofia-boton-wrap.show { opacity: 1; transform: translateY(0); }
+        .sofia-btn { padding: 14px 28px; font-size: 1rem; border-radius: 12px; }
     </style>
 </head>
 <body>
 
 <div id="login-overlay">
     <div class="login-card">
+        <img src="logo-sociofinanzas.png" alt="SocioFinanzas" style="max-width:120px; width:100%; margin-bottom:16px;">
         <h2>🔒 Acceso Privado</h2>
         <p>Ingresa tu código personal para entrar a tu SocioFinanzas Pro.</p>
         <input type="text" id="login-code" placeholder="Tu código" autocomplete="off">
@@ -112,6 +133,7 @@
 <div id="main-app" style="display:none;">
 <div class="container">
     <header>
+        <img src="logo-sociofinanzas.png" alt="SocioFinanzas" style="max-width:70px; width:100%; margin-bottom:10px;">
         <h1>SocioFinanzas Pro</h1>
         <p>Sistema Inteligente de Control Financiero y Fichas de Costo para MIPYMES</p>
         <div class="session-bar">
@@ -120,6 +142,17 @@
         </div>
     </header>
 
+    <!-- PANTALLA SOFIA - DIRECTORA FINANCIERA IA -->
+    <div id="sofia-screen">
+        <div class="sofia-card">
+            <div class="sofia-avatar-wrap">
+                <img src="sofia-avatar.png" alt="SofIA" class="sofia-avatar-img">
+            </div>
+            <div id="sofia-conversacion" class="sofia-conversacion"></div>
+        </div>
+    </div>
+
+    <div id="centro-financiero" style="display:none;">
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Resumen General</button>
         <button class="tab-btn" onclick="switchTab('fichacosto')">📋 Fichas de Costo</button>
@@ -184,9 +217,12 @@
             <div class="metric"><span class="metric-label">Margen Bruto:</span><span id="lbl-margen-bruto" class="metric-value">0%</span></div>
             <div style="margin: 15px 0; padding: 12px; background-color: #f8fafc; border-radius: 8px; border-left: 4px solid var(--accent);">
                 <strong style="color: var(--accent); font-size: 0.9rem; display: block; margin-bottom: 5px;">MÓDULO DE RETENCIÓN ONAT (MENSUAL)</strong>
-                <div class="metric" style="padding: 4px 0; border: none;"><span class="metric-label" style="font-size: 0.85rem;">Impuesto sobre Ingresos Brutos (10%):</span><span id="lbl-onat-ingresos" style="font-size: 0.95rem; font-weight: 600;">0 CUP</span></div>
+                <div class="metric" style="padding: 4px 0; border: none;"><span class="metric-label" style="font-size: 0.85rem;">Impuesto sobre Ventas/Servicios (10%):</span><span id="lbl-onat-ingresos" style="font-size: 0.95rem; font-weight: 600;">0 CUP</span></div>
                 <div class="metric" style="padding: 4px 0; border: none;"><span class="metric-label" style="font-size: 0.85rem;">Impuesto Fuerza de Trabajo (5% s/ Nómina):</span><span id="lbl-onat-fuerza" style="font-size: 0.95rem; font-weight: 600;">0 CUP</span></div>
+                <div class="metric" style="padding: 4px 0; border: none;"><span class="metric-label" style="font-size: 0.85rem;">Contribución Seguridad Social (1.5% s/ Nómina):</span><span id="lbl-onat-seg-social" style="font-size: 0.95rem; font-weight: 600;">0 CUP</span></div>
+                <div class="metric" style="padding: 4px 0; border: none;"><span class="metric-label" style="font-size: 0.85rem;">Impuesto sobre Utilidades (35% s/ Ganancia):</span><span id="lbl-onat-utilidades" style="font-size: 0.95rem; font-weight: 600;">0 CUP</span></div>
                 <div class="metric" style="padding: 4px 0; border: none; margin-top: 5px; border-top: 1px dashed #cbd5e1;"><span class="metric-label" style="font-size: 0.9rem; font-weight: bold;">Total Guardar para ONAT:</span><span id="lbl-onat-total" style="font-size: 1rem; font-weight: bold; color: var(--danger);">0 CUP</span></div>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">Tasas de referencia — confirma los porcentajes vigentes con tu contador o el Portal Tributario de la ONAT, ya que pueden cambiar.</p>
             </div>
             <div class="metric"><span class="metric-label">Utilidad Neta (Ganancia Real):</span><span id="lbl-utilidad-neta" class="metric-value">0 CUP</span></div>
             <div class="metric"><span class="metric-label">Margen Neto Limpio:</span><span id="lbl-margen-neto" class="metric-value">0%</span></div>
@@ -310,12 +346,14 @@
         </div>
     </div>
 
+    </div>
+
     <div class="footer"><p>Desarrollado con precisión financiera para el ecosistema privado cubano. © 2026</p></div>
 </div>
 </div>
 
 <script>
-    var CONFIG = { API_URL: "https://script.google.com/macros/s/AKfycbyP6BvSssKAHhPyTCidRjLqmM25x5tWV5-JZRVd4GTpV0SaG_GIbfPFXIB9wtLKnMrSNA/exec" };
+    var CONFIG = { API_URL: "https://script.google.com/macros/s/AKfycbwx0K39TUu0sc6wl36AjqRu0WHmTI_K7MMzFd5OnBA769rIy4vlLKiQhTQS51qhRe8bdQ/exec" };
     var currentCode = null;
     var saveTimeout = null;
     var isLoadingData = false;
@@ -414,9 +452,12 @@
 
         var onatIngresos = ingresos * 0.10;
         var onatFuerza = nomina * 0.05;
-        var onatTotal = onatIngresos + onatFuerza;
-
+        var contribucionSegSocial = nomina * 0.015;
         var gastosOperativosTotales = nomina + totalGF;
+        var utilidadAntesDeUtilidades = ingresos - totalMP - gastosOperativosTotales - onatIngresos - onatFuerza - contribucionSegSocial;
+        var impuestoUtilidades = utilidadAntesDeUtilidades > 0 ? utilidadAntesDeUtilidades * 0.35 : 0;
+        var onatTotal = onatIngresos + onatFuerza + contribucionSegSocial + impuestoUtilidades;
+
         var utilidadNeta = ingresos - totalMP - gastosOperativosTotales - onatTotal;
         var margenNeto = ingresos > 0 ? (utilidadNeta / ingresos) * 100 : 0;
 
@@ -427,6 +468,8 @@
         document.getElementById('lbl-margen-bruto').innerText = margenBruto.toFixed(1) + '%';
         document.getElementById('lbl-onat-ingresos').innerText = formatCUP(onatIngresos);
         document.getElementById('lbl-onat-fuerza').innerText = formatCUP(onatFuerza);
+        document.getElementById('lbl-onat-seg-social').innerText = formatCUP(contribucionSegSocial);
+        document.getElementById('lbl-onat-utilidades').innerText = formatCUP(impuestoUtilidades);
         document.getElementById('lbl-onat-total').innerText = formatCUP(onatTotal);
         document.getElementById('lbl-utilidad-neta').innerText = formatCUP(utilidadNeta);
         document.getElementById('lbl-margen-neto').innerText = margenNeto.toFixed(1) + '%';
@@ -624,7 +667,8 @@
             renderSelectorFichas();
             cargarFichaEnFormulario(fichas[0]);
 
-            cargarHistorial(code);
+            await cargarHistorial(code);
+            mostrarBienvenida();
         } catch (e) {
             console.error('Error cargando datos', e);
             calcularTodo();
@@ -668,6 +712,7 @@
     }
 
     function renderHistorial(rows) {
+        ultimoHistorial = rows.length ? rows[rows.length - 1] : null;
         var body = document.getElementById('historial-body');
         if (!rows.length) {
             body.innerHTML = '<tr><td colspan="6" style="color: var(--text-muted);">Aún no has guardado ningún mes.</td></tr>';
@@ -700,7 +745,12 @@
         var nomina = parseFloat(document.getElementById('nomina').value) || 0;
         var totalMP = sumarListaCUP('mp-list', tasa);
         var totalGF = sumarListaCUP('gf-list', tasa);
-        var onatTotal = (ingresos * 0.10) + (nomina * 0.05);
+        var onatIngresos = ingresos * 0.10;
+        var onatFuerza = nomina * 0.05;
+        var contribucionSegSocial = nomina * 0.015;
+        var utilidadAntesDeUtilidades = ingresos - totalMP - nomina - totalGF - onatIngresos - onatFuerza - contribucionSegSocial;
+        var impuestoUtilidades = utilidadAntesDeUtilidades > 0 ? utilidadAntesDeUtilidades * 0.35 : 0;
+        var onatTotal = onatIngresos + onatFuerza + contribucionSegSocial + impuestoUtilidades;
         var utilidadNeta = ingresos - totalMP - nomina - totalGF - onatTotal;
         var margenNeto = ingresos > 0 ? (utilidadNeta / ingresos) * 100 : 0;
 
@@ -783,6 +833,262 @@
         var mensaje = 'Hola, quiero pagar el plan ' + plan + ' (' + precio + ' CUP) para mi código ' + codigo + '. Ya envié la transferencia, adjunto comprobante.';
         var url = 'https://wa.me/5352742647?text=' + encodeURIComponent(mensaje);
         window.open(url, '_blank');
+    }
+
+    // ======= SOFIA - DIRECTORA FINANCIERA IA (CONVERSACIÓN ANIMADA) =======
+
+    var ultimoHistorial = null;
+
+    function sleep(ms) {
+        return new Promise(function(resolve) { setTimeout(resolve, ms); });
+    }
+
+    function escribirMensaje(texto, claseTipo) {
+        return new Promise(function(resolve) {
+            var contenedor = document.getElementById('sofia-conversacion');
+            var div = document.createElement('div');
+            div.className = 'sofia-msg ' + (claseTipo || 'narrativa');
+            contenedor.appendChild(div);
+            var i = 0;
+            var velocidad = 16;
+            function escribirChar() {
+                if (i <= texto.length) {
+                    div.textContent = texto.slice(0, i) + (i < texto.length ? '▋' : '');
+                    i++;
+                    setTimeout(escribirChar, velocidad);
+                } else {
+                    div.textContent = texto;
+                    resolve();
+                }
+            }
+            escribirChar();
+        });
+    }
+
+    function mostrarAlerta(texto) {
+        return new Promise(function(resolve) {
+            var contenedor = document.getElementById('sofia-conversacion');
+            var div = document.createElement('div');
+            div.className = 'sofia-msg alerta';
+            div.textContent = '⚠ ' + texto;
+            contenedor.appendChild(div);
+            setTimeout(resolve, 280);
+        });
+    }
+
+    function mostrarRecomendacion(texto) {
+        return new Promise(function(resolve) {
+            var contenedor = document.getElementById('sofia-conversacion');
+            var div = document.createElement('div');
+            div.className = 'sofia-msg recomendacion';
+            div.textContent = '✓ ' + texto;
+            contenedor.appendChild(div);
+            setTimeout(resolve, 280);
+        });
+    }
+
+    function mostrarScore(score, nivel, etiqueta) {
+        return new Promise(function(resolve) {
+            var contenedor = document.getElementById('sofia-conversacion');
+            var div = document.createElement('div');
+            div.className = 'sofia-score-card' + (nivel ? ' ' + nivel : '');
+            var emoji = nivel === 'verde' ? '🟢' : (nivel === 'amarillo' ? '🟡' : '🔴');
+            div.innerHTML = '<div class="sofia-score-label">Salud financiera</div>' +
+                '<div class="sofia-score-num">' + (score === null ? '--' : score) + '</div>' +
+                '<div class="sofia-score-tag">' + emoji + ' ' + etiqueta + '</div>';
+            contenedor.appendChild(div);
+            requestAnimationFrame(function() { div.classList.add('show'); });
+            setTimeout(resolve, 550);
+        });
+    }
+
+    function mostrarBoton() {
+        var contenedor = document.getElementById('sofia-conversacion');
+        var div = document.createElement('div');
+        div.className = 'sofia-boton-wrap';
+        div.innerHTML = '<button class="btn-primary sofia-btn" onclick="irACentroFinanciero()">Entrar al Centro Financiero</button>';
+        contenedor.appendChild(div);
+        requestAnimationFrame(function() { div.classList.add('show'); });
+    }
+
+    function generarConversacionSofia() {
+        var tasa = parseFloat(document.getElementById('tasa-cambio').value) || 1;
+        var ingresos = parseFloat(document.getElementById('ingresos').value) || 0;
+        var nomina = parseFloat(document.getElementById('nomina').value) || 0;
+        var totalMP = sumarListaCUP('mp-list', tasa);
+        var totalGF = sumarListaCUP('gf-list', tasa);
+
+        if (ingresos === 0) {
+            return { sinDatos: true, mensajeSinDatos: 'Aún no tengo suficiente información para evaluar tu negocio. Comencemos registrando tus ventas y gastos de este mes.' };
+        }
+
+        var onatIngresos = ingresos * 0.10;
+        var onatFuerza = nomina * 0.05;
+        var contribucionSegSocial = nomina * 0.015;
+        var gastosOperativosTotales = nomina + totalGF;
+        var utilidadAntesDeUtilidades = ingresos - totalMP - gastosOperativosTotales - onatIngresos - onatFuerza - contribucionSegSocial;
+        var impuestoUtilidades = utilidadAntesDeUtilidades > 0 ? utilidadAntesDeUtilidades * 0.35 : 0;
+        var onatTotal = onatIngresos + onatFuerza + contribucionSegSocial + impuestoUtilidades;
+        var utilidadNeta = ingresos - totalMP - gastosOperativosTotales - onatTotal;
+        var margenNeto = ingresos > 0 ? (utilidadNeta / ingresos) * 100 : 0;
+
+        var margenContribucionEfectivo = ingresos > 0 ? (ingresos - totalMP - (ingresos * 0.10)) / ingresos : 0;
+        var costosFijosEfectivos = totalGF + nomina + (nomina * 0.05);
+        var breakeven = margenContribucionEfectivo > 0 ? costosFijosEfectivos / margenContribucionEfectivo : 0;
+
+        var parrafos = [];
+        parrafos.push('Hola. Ya revisé los números de tu negocio.');
+        parrafos.push('Este mes vendiste ' + formatCUP(ingresos) + '.');
+        parrafos.push('Tu utilidad real fue de ' + formatCUP(utilidadNeta) + '.');
+        parrafos.push('Eso significa que estás ganando un ' + margenNeto.toFixed(1) + '%.');
+
+        if (utilidadNeta < 0) parrafos.push('Y eso me preocupa bastante.');
+        else if (margenNeto < 12) parrafos.push('Ese margen es más bajo de lo que me gustaría verte tener.');
+        else if (margenNeto < 25) parrafos.push('No está mal.');
+        else parrafos.push('Es un muy buen resultado.');
+
+        var alertas = [];
+        var recomendaciones = [];
+
+        if (utilidadNeta < 0) {
+            alertas.push('Estás perdiendo dinero este mes.');
+        }
+
+        if (ultimoHistorial && ultimoHistorial.snapshot && typeof ultimoHistorial.snapshot.margenNeto === 'number') {
+            if (margenNeto < ultimoHistorial.snapshot.margenNeto - 0.5) {
+                alertas.push('Tu margen cayó respecto al mes anterior (' + ultimoHistorial.snapshot.margenNeto.toFixed(1) + '% → ' + margenNeto.toFixed(1) + '%).');
+            }
+        }
+
+        var tasaAlertaActiva = document.getElementById('alerta-tasa').classList.contains('show');
+        if (tasaAlertaActiva) {
+            alertas.push('El costo de tus materias primas subió porque la tasa de cambio cambió.');
+            recomendaciones.push('Revisa el precio de venta de tus productos, ya se recalculó con la nueva tasa.');
+        }
+
+        if (onatTotal > 0 && utilidadNeta > 0 && onatTotal > utilidadNeta) {
+            alertas.push('Estás dejando poco dinero reservado para ONAT frente a lo que realmente ganas.');
+        }
+
+        if (ingresos > 0 && breakeven > 0 && (breakeven / ingresos) > 0.85) {
+            alertas.push('Tu punto de equilibrio está muy cerca de tus ventas actuales.');
+            recomendaciones.push('Cualquier caída en ventas te pondría en riesgo — conviene ampliar tu margen de maniobra.');
+        }
+
+        var fichaCritica = null;
+        var peorMargen = null;
+        fichas.forEach(function(f) {
+            if (!f.items || !f.items.length) return;
+            var costo = 0;
+            f.items.forEach(function(it) { costo += it.moneda === 'USD' ? it.monto * tasa : it.monto; });
+            var margenDeseado = (f.margenDeseado || 0) / 100;
+            var divisor = 1 - margenDeseado - 0.10;
+            var precio = divisor > 0 ? costo / divisor : costo / 0.1;
+            var gananciaReal = precio - costo - (precio * 0.10);
+            var margenReal = precio > 0 ? (gananciaReal / precio) * 100 : 0;
+            if (peorMargen === null || margenReal < peorMargen) {
+                peorMargen = margenReal;
+                fichaCritica = f;
+            }
+        });
+
+        if (fichaCritica && peorMargen !== null && peorMargen < 20) {
+            recomendaciones.push('Revisa el precio de ' + (fichaCritica.nombre || 'tu producto') + '.');
+            recomendaciones.push('Podrías aumentar su precio aproximadamente un 7% sin perder competitividad.');
+        }
+
+        if (margenNeto >= 25) {
+            recomendaciones.push('Si mantienes este ritmo, cerrarás el próximo mes con buena rentabilidad.');
+        } else if (margenNeto >= 12) {
+            recomendaciones.push('Con pequeños ajustes en precios o costos, puedes mejorar bastante tu rentabilidad.');
+        } else {
+            recomendaciones.push('Te recomiendo revisar con detalle tus costos de materia prima y tus gastos fijos.');
+        }
+
+        if (!fichas.length || fichas.every(function(f) { return !(f.items && f.items.length); })) {
+            recomendaciones.push('Registra al menos un producto en Fichas de Costo para conocer su precio ideal.');
+        }
+
+        alertas = alertas.slice(0, 3);
+        recomendaciones = recomendaciones.slice(0, 4);
+
+        var score = 50;
+        if (utilidadNeta < 0) score = 15;
+        else if (margenNeto < 12) score = 45;
+        else if (margenNeto < 25) score = 70;
+        else score = 90;
+        if (tasaAlertaActiva) score = Math.max(0, score - 10);
+
+        var nivel = score >= 70 ? 'verde' : (score >= 40 ? 'amarillo' : 'rojo');
+        var etiqueta = nivel === 'verde' ? 'Excelente' : (nivel === 'amarillo' ? 'Atención' : 'Riesgo crítico');
+
+        return { sinDatos: false, parrafos: parrafos, alertas: alertas, recomendaciones: recomendaciones, score: score, nivel: nivel, etiqueta: etiqueta };
+    }
+
+    async function ejecutarAnalisisSofia() {
+        var d = generarConversacionSofia();
+
+        if (d.sinDatos) {
+            await escribirMensaje(d.mensajeSinDatos, 'narrativa');
+            await sleep(300);
+            mostrarBoton();
+            return;
+        }
+
+        for (var i = 0; i < d.parrafos.length; i++) {
+            await escribirMensaje(d.parrafos[i], 'narrativa');
+            await sleep(350);
+        }
+
+        if (d.alertas.length) {
+            await sleep(200);
+            var introAlerta = d.alertas.length === 1 ? 'Pero encontré algo que me preocupa.' : 'Pero encontré ' + d.alertas.length + ' cosas que me preocupan.';
+            await escribirMensaje(introAlerta, 'narrativa');
+            for (i = 0; i < d.alertas.length; i++) {
+                await mostrarAlerta(d.alertas[i]);
+                await sleep(250);
+            }
+        }
+
+        await sleep(300);
+        await escribirMensaje('Muy bien. Ahora quiero ayudarte a mejorar esos números. Estas son mis recomendaciones para hoy.', 'narrativa');
+        for (i = 0; i < d.recomendaciones.length; i++) {
+            await mostrarRecomendacion(d.recomendaciones[i]);
+            await sleep(250);
+        }
+
+        await sleep(300);
+        await mostrarScore(d.score, d.nivel, d.etiqueta);
+        await sleep(400);
+        await escribirMensaje('No quiero que memorices números. Quiero ayudarte a tomar mejores decisiones.', 'narrativa');
+        await sleep(300);
+        mostrarBoton();
+    }
+
+    async function mostrarBienvenida() {
+        document.getElementById('sofia-conversacion').innerHTML = '';
+        document.getElementById('sofia-screen').style.display = 'block';
+        document.getElementById('centro-financiero').style.display = 'none';
+
+        await sleep(400);
+        await escribirMensaje('Hola, soy SofIA. Tu Directora Financiera Inteligente.', 'narrativa');
+        await sleep(400);
+        await escribirMensaje('Cada empresa tiene una historia detrás de sus números.', 'narrativa');
+        await sleep(400);
+        await escribirMensaje('Mi misión es transformar esos números en información clara, útil y accionable para que puedas tomar decisiones con mayor seguridad.', 'narrativa');
+        await sleep(400);
+        await escribirMensaje('Analizaré el desempeño de tu negocio, detectaré riesgos, identificaré oportunidades de crecimiento y te acompañaré en cada paso hacia tus objetivos.', 'narrativa');
+        await sleep(400);
+        await escribirMensaje('No tomo decisiones por ti. Te doy la información necesaria para que tomes las mejores decisiones.', 'narrativa');
+        await sleep(400);
+        await escribirMensaje('Comencemos.', 'narrativa');
+        await sleep(500);
+        await ejecutarAnalisisSofia();
+    }
+
+    function irACentroFinanciero() {
+        document.getElementById('sofia-screen').style.display = 'none';
+        document.getElementById('centro-financiero').style.display = 'block';
     }
 
     function entrarConCodigo() {
