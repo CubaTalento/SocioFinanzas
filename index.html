@@ -843,28 +843,16 @@
         return new Promise(function(resolve) { setTimeout(resolve, ms); });
     }
 
-    function escribirMensaje(texto, claseTipo) {
-        return new Promise(function(resolve) {
-            var contenedor = document.getElementById('sofia-conversacion');
-            var div = document.createElement('div');
-            div.className = 'sofia-msg ' + (claseTipo || 'narrativa');
-            contenedor.appendChild(div);
-            var i = 0;
-            var velocidad = 16;
-            function escribirChar() {
-                if (i <= texto.length) {
-                    div.textContent = texto.slice(0, i) + (i < texto.length ? '▋' : '');
-                    i++;
-                    setTimeout(escribirChar, velocidad);
-                } else {
-                    div.textContent = texto;
-                    resolve();
-                }
-            }
-            escribirChar();
-        });
-    }
-
+ function escribirMensaje(texto, claseTipo) {
+    return new Promise(function(resolve) {
+        var contenedor = document.getElementById('sofia-conversacion');
+        var div = document.createElement('div');
+        div.className = 'sofia-msg ' + (claseTipo || 'narrativa');
+        div.textContent = texto;
+        contenedor.appendChild(div);
+        resolve();
+    });
+}
     function mostrarAlerta(texto) {
         return new Promise(function(resolve) {
             var contenedor = document.getElementById('sofia-conversacion');
