@@ -89,7 +89,8 @@
         #sofia-screen { max-width: 600px; margin: 0 auto; }
         .sofia-card { background: linear-gradient(180deg, #ffffff, #f8fafc); border: 1px solid var(--border); border-radius: 20px; padding: 32px 24px; box-shadow: 0 8px 24px rgba(30,58,138,0.08); }
         .sofia-avatar-wrap { display: flex; justify-content: center; margin-bottom: 20px; }
-        .sofia-avatar-img { width: auto; max-height: 180px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 6px 14px rgba(30,58,138,0.18)); }
+        .sofia-avatar-img { width: auto; max-height: 180px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 6px 14px rgba(30,58,138,0.18)); animation: sofiaFloat 3.5s ease-in-out infinite; }
+        @keyframes sofiaFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         .sofia-conversacion { display: flex; flex-direction: column; }
         .sofia-msg { opacity: 0; transform: translateY(8px); animation: sofiaFadeIn 0.35s ease forwards; background: white; border: 1px solid var(--border); border-radius: 14px; padding: 12px 16px; margin-bottom: 10px; font-size: 0.95rem; line-height: 1.55; color: var(--text-main); }
         .sofia-msg.alerta { background: #fffbeb; border-color: #fde68a; }
@@ -601,6 +602,7 @@
         try {
             await fetch(CONFIG.API_URL, {
                 method: 'POST',
+                mode: 'no-cors',
                 headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify({ action: 'saveFichas', code: currentCode, fichas: fichas })
             });
@@ -690,6 +692,7 @@
         try {
             await fetch(CONFIG.API_URL, {
                 method: 'POST',
+                mode: 'no-cors',
                 headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify({ action: 'save', code: code, principal: principal })
             });
@@ -764,6 +767,7 @@
         try {
             await fetch(CONFIG.API_URL, {
                 method: 'POST',
+                mode: 'no-cors',
                 headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify({ action: 'guardarMes', code: currentCode, mes: mesInput, snapshot: snapshot })
             });
@@ -781,6 +785,7 @@
         try {
             await fetch(CONFIG.API_URL, {
                 method: 'POST',
+                mode: 'no-cors',
                 headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify({ action: 'eliminarMes', code: currentCode, mes: mes })
             });
