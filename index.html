@@ -834,7 +834,51 @@
         var url = 'https://wa.me/5352742647?text=' + encodeURIComponent(mensaje);
         window.open(url, '_blank');
     }
+// ===== Animación SofIA ===== 
 
+.sofia-avatar,
+#sofia-avatar,
+.sofia-img,
+#sofia-img {
+    animation: sofiaIdle 4s ease-in-out infinite;
+    transform-origin: center bottom;
+    will-change: transform;
+}
+
+@keyframes sofiaIdle {
+    0% {
+        transform: translateY(0px) scale(1);
+    }
+    25% {
+        transform: translateY(-4px) scale(1.01);
+    }
+    50% {
+        transform: translateY(0px) scale(1);
+    }
+    75% {
+        transform: translateY(-2px) scale(1.005);
+    }
+    100% {
+        transform: translateY(0px) scale(1);
+    }
+}
+
+/* Resplandor suave */
+
+.sofia-avatar img,
+#sofia-avatar img,
+.sofia-img,
+#sofia-img {
+    filter: drop-shadow(0 0 8px rgba(0,180,255,.20));
+    transition: filter .5s ease;
+}
+
+.sofia-avatar:hover img,
+#sofia-avatar:hover img,
+.sofia-img:hover,
+#sofia-img:hover {
+    filter: drop-shadow(0 0 18px rgba(0,180,255,.45));
+}
     // ======= SOFIA - DIRECTORA FINANCIERA IA (CONVERSACIÓN ANIMADA) =======
 
     var ultimoHistorial = null;
