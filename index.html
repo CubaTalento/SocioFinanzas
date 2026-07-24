@@ -353,7 +353,7 @@
 </div>
 
 <script>
-    var CONFIG = { API_URL: "https://script.google.com/macros/s/AKfycbwoyzNAvd5F-AZ2S46LtFG-s9fo1jHXID4A7nd4bE9nbKVYaZ9wIn5eIv1oSBo5Ri5KQg/exec" };
+    var CONFIG = { API_URL: "PEGA_AQUI_TU_URL_DE_APPS_SCRIPT" };
     var currentCode = null;
     var saveTimeout = null;
     var isLoadingData = false;
@@ -834,51 +834,7 @@
         var url = 'https://wa.me/5352742647?text=' + encodeURIComponent(mensaje);
         window.open(url, '_blank');
     }
-// ===== Animación SofIA ===== 
 
-.sofia-avatar,
-#sofia-avatar,
-.sofia-img,
-#sofia-img {
-    animation: sofiaIdle 4s ease-in-out infinite;
-    transform-origin: center bottom;
-    will-change: transform;
-}
-
-@keyframes sofiaIdle {
-    0% {
-        transform: translateY(0px) scale(1);
-    }
-    25% {
-        transform: translateY(-4px) scale(1.01);
-    }
-    50% {
-        transform: translateY(0px) scale(1);
-    }
-    75% {
-        transform: translateY(-2px) scale(1.005);
-    }
-    100% {
-        transform: translateY(0px) scale(1);
-    }
-}
-
-/* Resplandor suave */
-
-.sofia-avatar img,
-#sofia-avatar img,
-.sofia-img,
-#sofia-img {
-    filter: drop-shadow(0 0 8px rgba(0,180,255,.20));
-    transition: filter .5s ease;
-}
-
-.sofia-avatar:hover img,
-#sofia-avatar:hover img,
-.sofia-img:hover,
-#sofia-img:hover {
-    filter: drop-shadow(0 0 18px rgba(0,180,255,.45));
-}
     // ======= SOFIA - DIRECTORA FINANCIERA IA (CONVERSACIÓN ANIMADA) =======
 
     var ultimoHistorial = null;
@@ -887,16 +843,28 @@
         return new Promise(function(resolve) { setTimeout(resolve, ms); });
     }
 
- function escribirMensaje(texto, claseTipo) {
-    return new Promise(function(resolve) {
-        var contenedor = document.getElementById('sofia-conversacion');
-        var div = document.createElement('div');
-        div.className = 'sofia-msg ' + (claseTipo || 'narrativa');
-        div.textContent = texto;
-        contenedor.appendChild(div);
-        resolve();
-    });
-}
+    function escribirMensaje(texto, claseTipo) {
+        return new Promise(function(resolve) {
+            var contenedor = document.getElementById('sofia-conversacion');
+            var div = document.createElement('div');
+            div.className = 'sofia-msg ' + (claseTipo || 'narrativa');
+            contenedor.appendChild(div);
+            var i = 0;
+            var velocidad = 16;
+            function escribirChar() {
+                if (i <= texto.length) {
+                    div.textContent = texto.slice(0, i) + (i < texto.length ? '▋' : '');
+                    i++;
+                    setTimeout(escribirChar, velocidad);
+                } else {
+                    div.textContent = texto;
+                    resolve();
+                }
+            }
+            escribirChar();
+        });
+    }
+
     function mostrarAlerta(texto) {
         return new Promise(function(resolve) {
             var contenedor = document.getElementById('sofia-conversacion');
